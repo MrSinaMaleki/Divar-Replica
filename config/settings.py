@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-APPLICATIONS = ['core']
+APPLICATIONS = ['core', 'account', 'bookmark', 'category', 'chat', 'favorite', 'post']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
