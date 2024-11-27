@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     *list(map(lambda app: f"apps.{app}", APPLICATIONS)),
 
     # 3rd party apps:
+    'rest_framework',
 
 
 ]
