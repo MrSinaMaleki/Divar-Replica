@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # 3rd party apps:
     'rest_framework',
+    'django_celery_beat',
 
 
 ]
@@ -184,3 +185,13 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = 'replicadivarnoreply@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='<PASSWORD>', cast=str)
+
+
+# Celery:
+BROKER_URL = config('BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT =config('CELERY_ACCEPT_CONTENT', default=True, cast=lambda contents:contents.split(',') )
+CELERY_TASK_SERIALIZER = config('CELERY_TASK_SERIALIZER', default='json')
+CELERY_RESULT_SERIALIZER = config('CELERY_RESULT_SERIALIZER', default='json')
+CELERY_TIMEZONE = config('CELERY_TIMEZONE', default='UTC')
+
