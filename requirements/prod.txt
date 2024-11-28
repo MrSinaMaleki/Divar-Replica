@@ -1,0 +1,11 @@
+Django==4.2
+asgiref
+crc
+djangorestframework
+pillow
+psycopg2-binary
+python-decouple
+python-dotenv
+python_redis
+redis
+sqlparse

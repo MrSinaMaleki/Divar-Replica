@@ -19,17 +19,18 @@ AUTH_USER_MODEL = 'account.User'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from decouple import config
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='&(dj-development-secret_key)$')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', cast=lambda hosts: hosts.split(','))
 
 
 # Application definition
@@ -62,14 +63,53 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": str(os.getenv("REDIS_URL")),
-        # "KEY_PREFIX": "imdb",
-        # "TIMEOUT": 60 * 15,  # in seconds: 60 * 15 (15 minutes)
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": BASE_DIR / "file_based_cached",
+        }
+    }
+else:
+    # secure params
+    SECURE_HSTS_SECONDS = 12 * 30 * 24 * 60 * 60
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = "HTTP_X_FORWARDED_PROTO", "https"
+    USE_X_FORWARDED_HOST = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_REFERRER_POLICY = "strict-origin"
+    X_FRAME_OPTIONS = "SAMEORIGIN"
+    SESSION_COOKIE_AGE = 3 * 60 * 60
+    SESSION_TIMEOUT = 24 * 60 * 60
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME', default='postgres'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default='<PASSWORD>'),
+            'HOST': config('DB_HOST', default='db'),
+            'PORT': config('DB_PORT', default='5432'),
+        }
+    }
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config('REDIS_URL', str),
+        }
+    }
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -88,16 +128,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -124,7 +154,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE =config('TIME_ZONE', default='UTC', cast=str)
 
 USE_I18N = True
 
@@ -147,3 +177,10 @@ MEDIA_ROOT = BASE_DIR / 'storage/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', cast=str)
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = 'replicadivarnoreply@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='<PASSWORD>', cast=str)
