@@ -49,9 +49,20 @@ INSTALLED_APPS = [
     # 3rd party apps:
     'rest_framework',
     'django_celery_beat',
+    'drf_spectacular'
 
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Divar Replica',
+    'DESCRIPTION': 'A small replica of Persian popular website called Divar.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

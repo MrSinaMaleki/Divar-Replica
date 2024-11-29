@@ -79,12 +79,4 @@ class Verify(APIView):
 
 
 
-# test
-
-
-
-
-
-
-
 
