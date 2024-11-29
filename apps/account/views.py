@@ -20,6 +20,16 @@ from django.views import View
 # Create your views here.
 
 class SignRegister(APIView):
+    """
+     - example request
+
+        {
+
+            "email": "user@example.com",
+
+        }
+
+    """
     permission_classes = [AllowAny, ]
     serializer_class = UserLoginSerializer
 
@@ -48,6 +58,17 @@ class SignRegister(APIView):
 
 
 class Verify(APIView):
+    """
+     - example request
+
+        {
+
+            "email": "user@example.com",
+            "code": "code"
+
+        }
+
+    """
     permission_classes = [AllowAny, ]
     serializer_class = UserLoginSerializer
 
