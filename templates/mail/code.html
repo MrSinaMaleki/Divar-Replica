@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Login/Register CODE</title>
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Nunito);
+        /* Take care of image borders and formatting */
+        img {
+            max-width: 600px;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+        html {
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+            border: 0;
+            outline: none;
+            color: #bbbbbb;
+        }
+        a img {
+            border: none;
+        }
+        /* General styling */
+        td, h1, h2, h3 {
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: 400;
+        }
+        td {
+            text-align: center;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: none;
+            width: 100%;
+            height: 100%;
+            color: #666;
+            background: #fff;
+            font-size: 16px;
+            height: 100vh;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+        table {
+            border-collapse: collapse !important;
+        }
+        .headline {
+            color: #444;
+            font-size: 36px;
+        }
+        .force-full-width {
+            width: 100% !important;
+        }
+    </style>
+    <style media="screen" type="text/css">
+        @media screen {
+            td, h1, h2, h3 {
+                font-family: 'Nunito', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
+            }
+        }
+    </style>
+    <style media="only screen and (max-width: 480px)" type="text/css">
+        /* Mobile styles */
+        @media only screen and (max-width: 480px) {
+            table[class="w320"] {
+                width: 320px !important;
+            }
+        }
+    </style>
+    <style type="text/css"></style>
+</head>
+<body bgcolor="#fff" class="body"
+      style="padding:20px; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none">
+<table align="center" cellpadding="0" cellspacing="0" height="100%" width="100%">
+    <tbody>
+    <tr>
+        <td align="center" bgcolor="#fff" class="" valign="top" width="100%">
+            <center class="">
+                <table cellpadding="0" cellspacing="0" class="w320" style="margin: 0 auto;" width="600">
+                    <tbody>
+                    <tr>
+                        <td align="center" class="" valign="top">
+                            <table cellpadding="0" cellspacing="0" style="margin: 0 auto;" width="100%">
+                            </table>
+                            <table bgcolor="#fff" cellpadding="0" cellspacing="0" class=""
+                                   style="margin: 0 auto; width: 100%; margin-top: 100px;">
+                                <tbody style="margin-top: 15px;">
+                                <tr class="">
+                                    <td class="">
+                                        <img alt="robot picture" class="" height="155"
+                                             src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjM4NiAxNC42MTdIOC4yOGEuNzEyLjcxMiAwIDAgMS0uNTk1LS44MDZjLjQ3My0zLjExNy42My04LjA5Mi42My04LjEyNy4wMzUtLjM4Ni4zMzMtLjcuNzM2LS42ODNhLjcxNS43MTUgMCAwIDEgLjY4My43MThjMCAuMjEtLjE3NSA1LjA5Ny0uNjQ4IDguMzAzYS43LjcgMCAwIDEtLjcuNTk1Wm0xMC4wMzcgMS4yOTZhLjY5My42OTMgMCAwIDEtLjY2Ni0uNDkuNjg2LjY4NiAwIDAgMSAuNDU1LS44NzZjMy4zMS0xLjA1IDMuMzYzLTEuODU3IDMuMzgxLTIuMjk1LjAzNS0uNjgzLS40OS0xLjU1OC0uNy0xLjg1NmEuNzAyLjcwMiAwIDEgMSAxLjEzOC0uODI0Yy4xMDUuMTQgMS4wNSAxLjQ1NC45NjMgMi43NjgtLjA4NyAxLjU5NC0xLjMxNCAyLjU3NS00LjM2MSAzLjU1NmEuODc4Ljg3OCAwIDAgMC0uMTA1LjAxLjkyOC45MjggMCAwIDEtLjEwNS4wMDdabS05LjUxMiAyLjQ3YS42NTUuNjU1IDAgMCAxLS41NDMtLjI2Mi42ODMuNjgzIDAgMCAxIC4xMjMtLjk4YzEuNDM2LTEuMTQgMi40LTIuMTU2IDMuMDMtMy4wNDktLjM1LS4xNzUtLjcxOC0uNDM4LS45MS0uODc2LS4xNzYtLjQwMy0uMjgxLTEuMDY5LjMzMi0xLjk2Mi44NzYtMS4yOTYgMS43NTItMS41OTQgMi4wODQtMS42NjRhLjg3Ljg3IDAgMCAxIDEuMDE2LjYxM2MuMDg4LjMxNS4yOTggMS4zMTQtLjMzMiAyLjgzOC44NC0uMDE4IDEuNTA2LS4yNDUgMi4wMTQtLjY2Ni45OC0uNzg4IDEuMDMzLTIuMTIgMS4wMzMtMi4xMzdhLjcxNS43MTUgMCAwIDEgLjcxOS0uNjgzLjcxNS43MTUgMCAwIDEgLjY4My43MThjMCAuMDctLjA3IDEuOTQ0LTEuNTI0IDMuMTctLjkxMS43NzEtMi4xNTUgMS4xMDQtMy42NjEuOTgyLS43MTggMS4xMDMtMS44NTcgMi40LTMuNjI2IDMuOGEuNzA3LjcwNyAwIDAgMS0uNDM4LjE1OFptMy44MDEtNy4wNzZjLS4yNDcuMjExLS40Ni40NTktLjYzLjczNS0uMjI4LjM1LS4yNDYuNTQzLS4yMjguNTk2LjAzNS4wODguMjEuMTc1LjM4NS4yNDUuMzMzLS42NjUuNDM4LTEuMTkuNDczLTEuNTc2Wm0uMTc1IDQuOTIyYS43MS43MSAwIDAgMCAuNy42ODNoLjAzNmMuMDUzIDAgMS4yMjYtLjAzNSAyLjkwOC0uNDJhLjcuNyAwIDAgMCAuNTQzLS44NC43MDMuNzAzIDAgMCAwLS44NDEtLjU0NGMtMS41Ni4zMzItMi42NjMuMzg1LTIuNjguMzg1YS43MDQuNzA0IDAgMCAwLS42NjYuNzM2Wk0xLjEzNCAxOC4xMDNjLjEyMi4xNzUuMzUuMjguNTYuMjguMTQgMCAuMjgtLjAzNS40Mi0uMTIyIDQuNDUtMy4yNCA0LjYyNS03LjQ4IDQuNjI1LTcuNjU1IDAtLjM4NS0uMjk4LS43LS42ODMtLjcxOC0uMzg2LS4wMTgtLjcuMjk4LS43MTguNjgzIDAgLjE0LS4xNzYgMy43MzEtNC4wNDcgNi41NTFhLjcwMi43MDIgMCAwIDAtLjE1Ny45ODFaIiBmaWxsPSIjRDgzOTM5Ii8+PC9zdmc+"
+                                             width="155">
+                                    </td>
+                                </tr>
+                                <tr class="">
+                                    <td class="headline">Welcome to Divar</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <center class="">
+                                            <table cellpadding="0" cellspacing="0" class="" style="margin: 0 auto;"
+                                                   width="75%">
+                                                <tbody class="">
+                                                <tr class="">
+                                                    <td class="" style="color:#444; font-weight: 400;"><br><br>
+                                                        Here is your code:
+                                                        <br>
+                                                        Don't share this code with others<br><br>
+                                                        Use the code to login ;)<br>
+                                                        <br></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">
+                                        <div class="">
+                                            <a style="background-color:#a9355c;border-radius:4px;color:#fff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:normal;line-height:50px;text-align:center;text-decoration:none;width:350px;-webkit-text-size-adjust:none;"
+                                               href="">{{ code }}</a>
+                                        </div>
+                                        <br>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </center>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

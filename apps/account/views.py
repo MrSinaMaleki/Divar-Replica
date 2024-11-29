@@ -35,6 +35,13 @@ class SignRegister(APIView):
         if not (code := cache.get(email)):
             code = self.code_generator()
 
+        # _ = MailProvider(
+        #     "Login/Register CODE",
+        #     email,
+        #     "mail/code.html",
+        #     {"code": code}
+        # ).send()
+
         print(code)
         cache.set(email, code, 180)
         return Response({"status": "success"})
