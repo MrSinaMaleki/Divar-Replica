@@ -1,13 +1,15 @@
 from apps.account.serializers import UserLoginSerializer
 from rest_framework.views import APIView
-from django.contrib.auth import get_user_model
+from rest_framework.permissions import AllowAny
+from random import randint
+# from services.mail import MailProvider
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.core.cache import cache
-from random import randint
-from django.contrib.auth import login
-# from services.mail import MailProvider
-
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth import get_user_model, login
 # Create your views here.
 
 class SignRegister(APIView):
@@ -48,13 +50,6 @@ class SignRegister(APIView):
         return Response({"status": "success"})
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from django.core.cache import cache
-from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth import get_user_model, login
 class Verify(APIView):
     """
      - example request
@@ -143,3 +138,8 @@ class TokenRefreshView(APIView):
             return response
         except TokenError:
             raise AuthenticationFailed('Invalid or expired refresh token')
+
+
+class Profile(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response({"Pofile": "Bla bla bla ...!"})
