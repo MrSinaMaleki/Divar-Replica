@@ -85,7 +85,7 @@ function timerCounter() {
 }
 
 async function sendLoginCode(email) {
-  const apiUrl = "http://localhost:8000/accounts/loginAPI"; // Replace with your actual API endpoint
+  const apiUrl = "http://localhost:8000/account/loginAPI/"; // Replace with your actual API endpoint
   const payload = { email };
 
   try {
@@ -114,7 +114,7 @@ async function sendLoginCode(email) {
 
 
 async function verifyCode(email, code) {
-  const apiUrl = "http://localhost:8000/accounts/verifyAPI"; // Replace with your actual API endpoint
+  const apiUrl = "http://localhost:8000/account/verifyAPI/"; // Replace with your actual API endpoint
   const payload = { email, code };
 
   try {
