@@ -1,5 +1,5 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -25,9 +25,11 @@
     {% include 'components/footer.html' %}
 
 </body>
-{% block extra_body %} {% endblock %}
+
 
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/login_register.js' %}"></script>
+{% block extra_body %} {% endblock %}
+
 
 </html>

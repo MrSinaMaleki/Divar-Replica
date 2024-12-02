@@ -63,7 +63,8 @@ class User(AbstractUser, LogicalMixin):
     username = None
     password = None
     identification_number = models.CharField(max_length=11)
-    is_authenticated = models.BooleanField(default=False)
+    # Don't mess with Django - Hamid Reza Moradi ;)
+    # is_authenticated = models.BooleanField(default=False)
     auth_date = models.DateTimeField(null=True, blank=True)
     posts = models.ForeignKey(to=Post, related_name="user", related_query_name="user", on_delete=models.CASCADE, null=True, blank=True)
     # bookmarks

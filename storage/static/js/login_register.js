@@ -135,6 +135,18 @@ async function verifyCode(email, code) {
 
     const responseData = await response.json();
     console.log("Verification success:", responseData);
+
+    // Assuming the response contains the tokens in the following format
+    const { access_token, refresh_token } = responseData; // Adjust this to match your actual response structure
+
+    // Save tokens in localStorage (or in cookies, if preferred)
+    if (access_token) {
+      localStorage.setItem("access_token", access_token);  // Save access token in localStorage
+    }
+    if (refresh_token) {
+      localStorage.setItem("refresh_token", refresh_token);  // Save refresh token in localStorage
+    }
+
     return { success: true, data: responseData };
   } catch (error) {
     console.error("Error while verifying code:", error);

@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+{% csrf_token %}
+
+{% block title %}
+	Divar
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+
+{% block content %}
+    {% csrf_token %}
+	<button style="background: #0f0f0f; color: white" onclick="fetchProfile()">
+        Click here to see the profile page
+    </button>
+{% endblock %}
+
+
+{% block extra_body %}
+    <script>
+        console.log("he ?")
+    function fetchProfile(){
+        const data = fetchWithAuth("http://localhost:8000/account/profile/",
+            {method:'GET',
+
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': 'HkW5ZMwtSubkZCC84DHEHWlmTr7aalCG',
+                },
+
+
+            })
+        data.then(res => {
+            console.log(res)
+        })
+
+    }
+
+        console.log("he ?")
+
+
+    </script>
+
+{% endblock %}
