@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% load static %}
+    <title>{% block title %}Divar{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+
+
+    {% include "layout/head.html" %}
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="font-iransans">
+    {% include "components/header.html" %}
+    {% include "components/logincompo.html" %}
+
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+
+</body>
+{% block extra_body %} {% endblock %}
+
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/login_register.js' %}"></script>
+
+</html>
