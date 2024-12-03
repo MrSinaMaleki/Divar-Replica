@@ -16,7 +16,6 @@ class Category(models.Model):
         blank=True,
         on_delete=models.CASCADE,
         verbose_name="children",
-        verbose_name_plural="Parent Categories"
     )
     level = models.PositiveSmallIntegerField(choices=Level_CHOICES, verbose_name="Category Level")
     image = models.ImageField(
@@ -24,7 +23,6 @@ class Category(models.Model):
         blank=True,
         null=True,
         verbose_name="Image",
-        verbose_name_plural="Images",
         help_text="Only level one category image is allowed"
     )
 
@@ -88,12 +86,12 @@ class Field(models.Model):
         verbose_name = "Field"
         verbose_name_plural = "Fields"
         ordering = ['name']
-        constraints = [
-            models.CheckConstraint(
-                check= Q(category__level=3),
-                name="category_level_3"
-            )
-        ]
+        # constraints = [
+        #     models.CheckConstraint(
+        #         check= Q(category__level=3),
+        #         name="category_level_3"
+        #     )
+        # ]
 
     def __str__(self):
         return f"{self.name},{'optional' if self.is_optional else 'Mandatory'}"
