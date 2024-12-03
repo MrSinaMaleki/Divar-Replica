@@ -34,6 +34,7 @@ urlpatterns = [
 
     path('temp/', TemplateView.as_view(template_name='temp.html'), name='temp'),
 
+    path('category/', include('apps.category.urls'), name='category'),
 ]
 
 if settings.DEBUG:
