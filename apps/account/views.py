@@ -93,7 +93,7 @@ class Verify(APIView):
         User = get_user_model()
         user, created = User.objects.get_or_create(email=email)
 
-        # login(request, user)
+        login(request, user)
         tokens = self.get_tokens_for_user(user)
 
         response = Response({
