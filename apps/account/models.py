@@ -7,7 +7,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from apps.core.managers import LogicalMixin
 from datetime import date
-from apps.post.models import Post
 
 
 def validate_image_size(image):
@@ -81,7 +80,6 @@ class User(AbstractUser, LogicalMixin):
     # is_authenticated = models.BooleanField(default=False)
 
     # relations:
-    posts = models.ForeignKey(to=Post, related_name="user", related_query_name="user", on_delete=models.CASCADE, null=True, blank=True)
     # bookmarks
     # chats
     # notes
