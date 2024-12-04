@@ -22,6 +22,7 @@ from config import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from django.views.generic import TemplateView
+from apps.core.views import LocationList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +36,7 @@ urlpatterns = [
     path('temp/', TemplateView.as_view(template_name='temp.html'), name='temp'),
 
     path('category/', include('apps.category.urls'), name='category'),
+    path('location/', LocationList.as_view(), name='location'),
 ]
 
 if settings.DEBUG:
