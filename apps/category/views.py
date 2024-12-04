@@ -9,8 +9,38 @@ from rest_framework.response import Response
 
 # Create your views here.
 class CategoryList(ListAPIView):
+    """
+         - example response
+
+                {
+                "id": 1,
+                "title": "Main Category",
+                "level": 1,
+                "image": "Some URL",
+                "parent": null
+                },
+                {
+                  "id": 2,
+                  "title": "Sub Category",
+                  "level": 2,
+                  "image": null,
+                  "parent": 1
+                },
+                {
+                  "id": 3,
+                  "title": "Sub-Sub Category",
+                  "level": 3,
+                  "image": null,
+                  "parent": 2
+                },
+
+
+    """
+
     permission_classes = (AllowAny,)
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     permission_classes = (AllowAny,)
+    ordering_fields = ['id', 'title']
+    ordering = ['id']
 
