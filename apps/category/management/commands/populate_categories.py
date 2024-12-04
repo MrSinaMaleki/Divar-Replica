@@ -1,5 +1,10 @@
 from django.core.management.base import BaseCommand
 from apps.category.models import Category
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 categories_data = {
     "categories": {

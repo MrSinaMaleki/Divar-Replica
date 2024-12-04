@@ -2,6 +2,11 @@ import requests
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 from apps.core.models import Location
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 class Command(BaseCommand):
     help = 'Populate provinces and areas from the Iran locations API'
