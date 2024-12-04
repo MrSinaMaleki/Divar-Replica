@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 # Create your views here.
 class CategoryList(ListAPIView):
+    permission_classes = (AllowAny,)
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (AllowAny,)
