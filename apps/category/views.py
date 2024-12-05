@@ -1,7 +1,7 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 
-from apps.category.serializers import CategorySerializer, FieldSerializer
+from apps.category.serializers import CategorySerializer, FieldSerializer, FieldCategorySerializer
 from apps.category.models import Category, Field
 from rest_framework.response import Response
 
@@ -46,3 +46,10 @@ class FieldsList(ListAPIView):
     permission_classes = (AllowAny,)
     queryset = Field.objects.all().order_by('id')
     serializer_class = FieldSerializer
+
+
+class CategoryFilesList(ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Category.objects.all().order_by('id')
+    serializer_class = FieldCategorySerializer
+
