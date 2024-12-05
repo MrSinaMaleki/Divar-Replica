@@ -1,8 +1,8 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 
-from apps.category.serializers import CategorySerializer
-from apps.category.models import Category
+from apps.category.serializers import CategorySerializer, FieldSerializer
+from apps.category.models import Category, Field
 from rest_framework.response import Response
 
 
@@ -41,3 +41,8 @@ class CategoryList(ListAPIView):
     ordering_fields = ['id', 'title']
     ordering = ['id']
 
+class FieldsList(ListAPIView):
+
+    permission_classes = (AllowAny,)
+    queryset = Field.objects.all().order_by('id')
+    serializer_class = FieldSerializer
