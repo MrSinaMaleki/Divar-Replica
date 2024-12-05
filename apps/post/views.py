@@ -25,19 +25,28 @@ from rest_framework.views import APIView
 from .models import Category
 from .serializers import CategorySerializer, PostSerializer
 
-@api_view(['GET'])
-def get_category_fields(request, category_id):
-    try:
-        category = Category.objects.get(id=category_id)
-    except Category.DoesNotExist:
-        return Response({'detail': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from apps.category.models import Category
+from apps.category.serializers import CategorySerializer
 
-    # Serialize category data along with associated fields
-    serializer = CategorySerializer(category)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+class CategoryFieldsView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, category_id, *args, **kwargs):
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response({'detail': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Serialize category data along with associated fields
+        serializer = CategorySerializer(category)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class PostCreateView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():

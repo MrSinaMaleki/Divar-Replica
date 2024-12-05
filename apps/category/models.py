@@ -81,7 +81,6 @@ class Field(models.Model):
     )
     name = models.CharField(max_length=255, verbose_name="Field Name")
     is_optional = models.BooleanField(default=False, verbose_name="Field is optional")
-    value = models.TextField(blank=True, null=True, verbose_name="Field Value")
 
     class Meta:
         verbose_name = "Field"
@@ -109,6 +108,6 @@ class Field(models.Model):
 class PostField(models.Model):
     post = models.ForeignKey('post.Post', on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
-    value = models.TextField()
+    value = models.TextField(blank=True, null=True, verbose_name="Post Field Value")
 
 
