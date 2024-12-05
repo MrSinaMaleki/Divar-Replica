@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.db.models import Q
 
 class Category(models.Model):
     Level_CHOICES = [
@@ -35,7 +34,7 @@ class Category(models.Model):
         ordering = ['level', 'title']
 
     def __str__(self):
-        return f'name:{self.title}, level:{self.level}'
+        return f'name:{self.title}, level:{self.level}, parent:{self.parent}'
 
     def has_fields(self):
         if self.pk:
@@ -80,7 +79,7 @@ class Field(models.Model):
     )
     name = models.CharField(max_length=255, verbose_name="Field Name")
     is_optional = models.BooleanField(default=False, verbose_name="Field is optional")
-
+    value = models.TextField(blank=True, null=True, verbose_name="Field Value")
 
     class Meta:
         verbose_name = "Field"
@@ -103,3 +102,11 @@ class Field(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+
+class PostField(models.Model):
+    post = models.ForeignKey('post.Post', on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    value = models.TextField()
+
+
