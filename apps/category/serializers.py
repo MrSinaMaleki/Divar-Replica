@@ -11,4 +11,4 @@ class CategorySerializer(serializers.ModelSerializer):
 class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
-        fields = ['category', 'name', 'is_optional']
+        fields = ['category', 'name', 'is_optional', 'f_type', 'drop_down_menu_options']
