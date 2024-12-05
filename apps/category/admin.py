@@ -19,4 +19,10 @@ class FieldAdmin(admin.ModelAdmin):
             return super().get_model_perms(request)
         return {}
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'category':
+            kwargs['queryset'] = Category.objects.filter(level=3)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 admin.site.register(Field, FieldAdmin)

@@ -34,7 +34,9 @@ class Category(models.Model):
         ordering = ['level', 'title']
 
     def __str__(self):
-        return f'name:{self.title}, level:{self.level}, parent:{self.parent}'
+        if self.parent:
+            return f'{self.parent} < {self.title}'
+        return self.title
 
     def has_fields(self):
         if self.pk:
