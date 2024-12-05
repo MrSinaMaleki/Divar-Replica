@@ -24,6 +24,7 @@ class Category(models.Model):
         verbose_name="Image",
         help_text="Only level one category image is allowed"
     )
+    # parents_names = models.CharField(max_length=255, verbose_name="Parents names", default=" ")
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
@@ -52,6 +53,7 @@ class Category(models.Model):
                 raise ValidationError("Main categories (level 1) cannot have fields.")
 
         elif self.level == 2:
+            # self.parents_names = f'{self.parent.title} < {self.title}'
             if not self.parent:
                 raise ValidationError("Subcategories (level 2) must have a parent.")
             if self.image:
@@ -61,6 +63,7 @@ class Category(models.Model):
 
 
         elif self.level == 3:
+            # self.parents_names = f'{self.parent.parent.title} < {self.parent.title} < {self.title}'
             if not self.parent:
                 raise ValidationError("Sub-subcategories (level 3) must have a parent.")
 
