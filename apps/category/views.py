@@ -1,4 +1,3 @@
-from pip._vendor.requests.models import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 
@@ -7,7 +6,6 @@ from apps.category.models import Category
 from rest_framework.response import Response
 
 
-# Create your views here.
 class CategoryList(ListAPIView):
     """
          - example response
@@ -40,7 +38,6 @@ class CategoryList(ListAPIView):
     permission_classes = (AllowAny,)
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
-    permission_classes = (AllowAny,)
     ordering_fields = ['id', 'title']
     ordering = ['id']
 

@@ -37,6 +37,7 @@ urlpatterns = [
 
     path('category/', include('apps.category.urls'), name='category'),
     path('location/', LocationList.as_view(), name='location'),
+    path('post/', include('apps.post.urls'), name='post'),
 ]
 
 if settings.DEBUG:

@@ -33,10 +33,12 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_expired(self):
+        if not self.created_at:
+            return False
         return now() > self.created_at + timedelta(hours=30)
 
     def save(self, *args, **kwargs):
-        if self.is_exipred() and self.status != self.Status.EXPIRED:
+        if self.is_expired() and self.status != self.Status.EXPIRED:
             self.status = self.Status.EXPIRED
         super().save(*args, **kwargs)
 

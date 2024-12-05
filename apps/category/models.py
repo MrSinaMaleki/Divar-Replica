@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.db.models import Q
 
 class Category(models.Model):
     Level_CHOICES = [
@@ -25,6 +24,7 @@ class Category(models.Model):
         verbose_name="Image",
         help_text="Only level one category image is allowed"
     )
+    # parents_names = models.CharField(max_length=255, verbose_name="Parents names", default=" ")
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
@@ -35,7 +35,9 @@ class Category(models.Model):
         ordering = ['level', 'title']
 
     def __str__(self):
-        return f'name:{self.title}, level:{self.level}'
+        if self.parent:
+            return f'{self.parent} < {self.title}'
+        return self.title
 
     def has_fields(self):
         if self.pk:
@@ -51,6 +53,7 @@ class Category(models.Model):
                 raise ValidationError("Main categories (level 1) cannot have fields.")
 
         elif self.level == 2:
+            # self.parents_names = f'{self.parent.title} < {self.title}'
             if not self.parent:
                 raise ValidationError("Subcategories (level 2) must have a parent.")
             if self.image:
@@ -60,6 +63,7 @@ class Category(models.Model):
 
 
         elif self.level == 3:
+            # self.parents_names = f'{self.parent.parent.title} < {self.parent.title} < {self.title}'
             if not self.parent:
                 raise ValidationError("Sub-subcategories (level 3) must have a parent.")
 
@@ -80,7 +84,6 @@ class Field(models.Model):
     )
     name = models.CharField(max_length=255, verbose_name="Field Name")
     is_optional = models.BooleanField(default=False, verbose_name="Field is optional")
-
 
     class Meta:
         verbose_name = "Field"
@@ -103,3 +106,11 @@ class Field(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+
+class PostField(models.Model):
+    post = models.ForeignKey('post.Post', on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    value = models.TextField(blank=True, null=True, verbose_name="Post Field Value")
+
+
