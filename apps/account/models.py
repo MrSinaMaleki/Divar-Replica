@@ -51,6 +51,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser, LogicalMixin):
+    # Groups and Permissions (with commands)
     class Roles(models.TextChoices):
         NORMAL_USER = 'normal', 'Normal User'
         ADMIN = 'admin', 'Admin'
@@ -73,6 +74,8 @@ class User(AbstractUser, LogicalMixin):
     id_pic = models.ImageField(upload_to="images/", null=True, blank=True,
                                       validators=[validate_image_size])
     nationality = models.CharField(max_length=100, choices=Nationalities.choices, null=True, blank=True)
+
+    # rename
     is_dad = models.BooleanField(default=False)
     is_dad_date = models.DateTimeField(null=True, blank=True)
 

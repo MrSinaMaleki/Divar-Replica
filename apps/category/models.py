@@ -29,6 +29,8 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
 
+    # pay
+
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
@@ -39,6 +41,7 @@ class Category(models.Model):
             return f'{self.parent} < {self.title}'
         return self.title
 
+    # field
     def has_fields(self):
         if self.pk:
             return self.field.exists()
