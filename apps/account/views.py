@@ -139,8 +139,6 @@ class Verify(APIView):
 from rest_framework.permissions import IsAuthenticated
 
 class Profile(APIView):
-    permission_classes = [IsAuthenticated]
-    # authentication_classes = []
 
     def get(self, request, *args, **kwargs):
         return Response({"Pofile": "Bla bla bla ...!"})

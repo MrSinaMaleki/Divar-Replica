@@ -32,6 +32,9 @@ class Post(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='posts', limit_choices_to={'type': 2})
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # video
+
+
     def is_expired(self):
         if not self.created_at:
             return False

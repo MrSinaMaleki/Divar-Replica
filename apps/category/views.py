@@ -1,10 +1,11 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 
-from apps.category.serializers import CategorySerializer
-from apps.category.models import Category
+from apps.category.serializers import CategorySerializer, FieldSerializer, FieldCategorySerializer
+from apps.category.models import Category, Field
 from rest_framework.response import Response
 
+# redis cash decorator inserter.
 
 class CategoryList(ListAPIView):
     """
@@ -40,4 +41,38 @@ class CategoryList(ListAPIView):
     serializer_class = CategorySerializer
     ordering_fields = ['id', 'title']
     ordering = ['id']
+
+class MainCategoriesList(ListAPIView):
+    """
+         - example response
+
+                {
+                    "id": 1,
+                    "title": "main category",
+                    "level": 1,
+                    "image": "src link",
+                    "parent": null
+                }
+
+
+    """
+
+
+
+    permission_classes = (AllowAny,)
+    queryset = Category.objects.filter(level=1).order_by('id')
+    serializer_class = CategorySerializer
+
+
+class FieldsList(ListAPIView):
+
+    permission_classes = (AllowAny,)
+    queryset = Field.objects.all().order_by('id')
+    serializer_class = FieldSerializer
+
+
+class CategoryFilesList(ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Category.objects.all().order_by('id')
+    serializer_class = FieldCategorySerializer
 
