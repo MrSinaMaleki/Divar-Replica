@@ -75,9 +75,9 @@ class User(AbstractUser, LogicalMixin):
                                       validators=[validate_image_size])
     nationality = models.CharField(max_length=100, choices=Nationalities.choices, null=True, blank=True)
 
-    # rename
-    is_dad = models.BooleanField(default=False)
-    is_dad_date = models.DateTimeField(null=True, blank=True)
+    # Documents were accepted by admin
+    is_verified = models.BooleanField(default=False)
+    is_verified_date = models.DateTimeField(null=True, blank=True)
 
     # Don't mess with Django - Hamid Reza Moradi ;)
     # is_authenticated = models.BooleanField(default=False)

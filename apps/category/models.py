@@ -30,6 +30,7 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
 
     # pay
+    is_premium = models.BooleanField(default=False, verbose_name="Is Premium")
 
     class Meta:
         verbose_name = "Category"
