@@ -14,7 +14,6 @@
 {% block content %}
     {% csrf_token %}
     <div class="mt-12">
-
         <!-- Category Selection -->
         <div id="category-container" class="bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
   <h1 class="text-xl font-semibold mb-4 text-center">انتخاب دسته‌بندی</h1>
@@ -57,32 +56,32 @@
         <!-- Province and Area Selection -->
         <div id="location-selection" class="hidden bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
 
-    <!-- Province Selection -->
-  <div class="mb-4 w-full">
-    <label for="province" class="block text-lg mb-2">استان</label>
-    <select
-      id="province"
-      class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
-      onchange="fetchCities(this.value)"
-    >
-      <option value="">انتخاب استان...</option>
-    </select>
-  </div>
+        <!-- Province Selection -->
+        <div class="mb-4 w-full">
+          <label for="province" class="block text-lg mb-2">استان</label>
+          <select
+            id="province"
+            class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
+            onchange="fetchCities(this.value)"
+          >
+            <option value="">انتخاب استان...</option>
+          </select>
+        </div>
 
-  <!-- Area Selection -->
-  <div class="mb-4 w-full">
-    <label for="area" class="block text-lg mb-2">محله</label>
-    <select
-      id="area"
-      class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
-      disabled
-    >
-      <option value="">انتخاب محله...</option>
-    </select>
-  </div>
+        <!-- Area Selection -->
+        <div class="mb-4 w-full">
+          <label for="area" class="block text-lg mb-2">محله</label>
+          <select
+            id="area"
+            class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
+            disabled
+          >
+            <option value="">انتخاب محله...</option>
+          </select>
+        </div>
 
-  <!-- Continue Button -->
-  <button
+        <!-- Continue Button -->
+        <button
     id="continue-btn"
     class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded disabled:opacity-50"
     onclick="proceedToPostForm()"
@@ -90,8 +89,7 @@
   >
     ادامه
   </button>
-</div>
-
+        </div>
     </div>
 
 {% endblock %}
