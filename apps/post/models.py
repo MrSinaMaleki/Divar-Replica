@@ -33,7 +33,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     # video
-
+    video = models.FileField(upload_to='videos/%Y/%m/%d', null=True, blank=True)
 
     def is_expired(self):
         if not self.created_at:
