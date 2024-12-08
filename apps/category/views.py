@@ -70,7 +70,7 @@ class FieldsList(ListAPIView):
     serializer_class = FieldSerializer
 
 
-class CategoryFilesList(ListAPIView):
+class AllCategoryFilesList(ListAPIView):
 
     permission_classes = (AllowAny,)
     queryset = Category.objects.all().order_by('id')
@@ -97,3 +97,20 @@ class CategoryChildrenView(APIView):
         sub_cats = Category.objects.filter(parent=category)
         serializer = CategorySerializer(sub_cats, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CategoryFieldsView(APIView):
+    permission_classes = [AllowAny,]
+    def get(self, request, category_id):
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response({'detail': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+        serializer = FieldCategorySerializer(category)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
