@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load static %}
 {% csrf_token %}
 
 {% block title %}
@@ -12,94 +13,90 @@
 
 {% block content %}
     {% csrf_token %}
-<div id="category-container" class="flex items-center justify-center min-h-screen w-94">
+    <div class="mt-12">
 
-    <div class="bg-white text-black p-4 w-64 rounded-lg shadow-lg">
-      <h2 class="text-lg font-bold mb-4 text-center">دسته آگهی</h2>
-      <ul id="category-list" class="space-y-2">
+        <!-- Category Selection -->
+        <div id="category-container" class="bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
+  <h1 class="text-xl font-semibold mb-4 text-center">انتخاب دسته‌بندی</h1>
 
-      </ul>
-    </div>
+  <!-- Main Category Selection -->
+  <div class="mb-4 w-full">
+    <label for="main-category" class="block text-lg mb-2">دسته اصلی</label>
+    <select id="main-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubCategories(this.value)">
+      <option value="">انتخاب دسته...</option>
+    </select>
   </div>
 
+  <!-- Subcategory Selection -->
+  <div class="mb-4 w-full">
+    <label for="sub-category" class="block text-lg mb-2">زیرمجموعه</label>
+    <select id="sub-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubSubCategories(this.value)" disabled>
+      <option value="">انتخاب زیرمجموعه...</option>
+    </select>
+  </div>
 
+  <!-- Sub-Subcategory Selection -->
+  <div class="mb-4 w-full">
+    <label for="sub-subcategory" class="block text-lg mb-2">زیر-زیرمجموعه</label>
+    <select id="sub-subcategory" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="logCategorySelection(this.value)" disabled>
+      <option value="">انتخاب زیر-زیرمجموعه...</option>
+    </select>
+  </div>
 
+  <!-- Continue Button -->
+  <button
+    id="select-category-btn"
+    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded disabled:opacity-50"
+    onclick="showLocationSelection()"
+    disabled
+  >
+    ادامه
+  </button>
+</div>
+
+        <!-- Province and Area Selection -->
+        <div id="location-selection" class="hidden bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
+
+    <!-- Province Selection -->
+  <div class="mb-4 w-full">
+    <label for="province" class="block text-lg mb-2">استان</label>
+    <select
+      id="province"
+      class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
+      onchange="fetchCities(this.value)"
+    >
+      <option value="">انتخاب استان...</option>
+    </select>
+  </div>
+
+  <!-- Area Selection -->
+  <div class="mb-4 w-full">
+    <label for="area" class="block text-lg mb-2">محله</label>
+    <select
+      id="area"
+      class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500"
+      disabled
+    >
+      <option value="">انتخاب محله...</option>
+    </select>
+  </div>
+
+  <!-- Continue Button -->
+  <button
+    id="continue-btn"
+    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded disabled:opacity-50"
+    onclick="proceedToPostForm()"
+    disabled
+  >
+    ادامه
+  </button>
+</div>
+
+    </div>
 
 {% endblock %}
 
 
 {% block extra_body %}
-    <script>
-    const apiUrl = "http://localhost:8000/category/main_categories/";
-    let categoryHistory = []; // To store category levels for "back" functionality
-    let currentCategories = []; // To store current category list
-
-    // Fetch categories and populate the list
-    async function fetchCategories(url, parentCategoryId = null) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        const categories = await response.json();
-        currentCategories = categories;
-
-
-        const categoryList = document.getElementById("category-list");
-
-
-        categoryList.innerHTML = "";
-
-
-        if (categoryHistory.length > 0) {
-          const backButton = document.createElement("li");
-          backButton.className =
-            "flex justify-between items-center px-4 py-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200";
-          backButton.innerHTML = `
-            <button class="text-blue-500">بازگشت</button>
-          `;
-          backButton.addEventListener("click", () => {
-            categoryHistory.pop();
-            const previousCategory = categoryHistory[categoryHistory.length - 1];
-
-
-            if (previousCategory !== undefined) {
-              const previousUrl = `http://localhost:8000/category/${previousCategory}/children/`;
-              fetchCategories(previousUrl, previousCategory);
-            } else {
-
-              fetchCategories(apiUrl);
-            }
-          });
-          categoryList.appendChild(backButton);
-        }
-
-
-        categories.forEach((category) => {
-          const listItem = document.createElement("li");
-          listItem.className =
-            "flex justify-between items-center px-4 py-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200";
-          listItem.innerHTML = `
-            <button class="text-black">${category.title}</button>
-            <span class="text-gray-600">&gt;</span>
-          `;
-          listItem.addEventListener("click", () => {
-
-            categoryHistory.push(category.id);
-            const nextUrl = `http://localhost:8000/category/${category.id}/children/`;
-            fetchCategories(nextUrl, category.id);
-          });
-          categoryList.appendChild(listItem);
-        });
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        alert("Failed to load categories. Please try again later.");
-      }
-    }
-
-
-    fetchCategories(apiUrl);
-  </script>
-
-
+    <script src="{% static 'js/add_posts.js' %}"></script>
 {% endblock %}
