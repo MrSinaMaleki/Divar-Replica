@@ -10,5 +10,5 @@ urlpatterns = [
     path('all_fields/', views.FieldsList.as_view(), name='field_list'),
 
     path('all_category_fields/', views.CategoryFilesList.as_view(), name='category_files_list'),
-
+    path('<int:category_id>/children/', views.CategoryChildrenView.as_view(), name='category-children'),
 ]

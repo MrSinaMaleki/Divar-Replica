@@ -4,6 +4,8 @@ from rest_framework.generics import ListAPIView
 from apps.category.serializers import CategorySerializer, FieldSerializer, FieldCategorySerializer
 from apps.category.models import Category, Field
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 
 # redis cash decorator inserter.
 
@@ -56,9 +58,6 @@ class MainCategoriesList(ListAPIView):
 
 
     """
-
-
-
     permission_classes = (AllowAny,)
     queryset = Category.objects.filter(level=1).order_by('id')
     serializer_class = CategorySerializer
@@ -72,7 +71,29 @@ class FieldsList(ListAPIView):
 
 
 class CategoryFilesList(ListAPIView):
+
     permission_classes = (AllowAny,)
     queryset = Category.objects.all().order_by('id')
     serializer_class = FieldCategorySerializer
 
+
+class CategoryChildrenView(APIView):
+    """
+    {
+        "id": 3,
+        "title": "آیفون",
+        "level": 3,
+        "image": null,
+        "parent": 2
+    }
+    """
+    permission_classes = (AllowAny,)
+    def get(self, request, category_id):
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return Response({'detail': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        sub_cats = Category.objects.filter(parent=category)
+        serializer = CategorySerializer(sub_cats, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

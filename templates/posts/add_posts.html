@@ -1,0 +1,105 @@
+{% extends '_base.html' %}
+{% csrf_token %}
+
+{% block title %}
+	ثبت آگهی جدید
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+
+{% block content %}
+    {% csrf_token %}
+<div id="category-container" class="flex items-center justify-center min-h-screen w-94">
+
+    <div class="bg-white text-black p-4 w-64 rounded-lg shadow-lg">
+      <h2 class="text-lg font-bold mb-4 text-center">دسته آگهی</h2>
+      <ul id="category-list" class="space-y-2">
+
+      </ul>
+    </div>
+  </div>
+
+
+
+
+{% endblock %}
+
+
+{% block extra_body %}
+    <script>
+    const apiUrl = "http://localhost:8000/category/main_categories/";
+    let categoryHistory = []; // To store category levels for "back" functionality
+    let currentCategories = []; // To store current category list
+
+    // Fetch categories and populate the list
+    async function fetchCategories(url, parentCategoryId = null) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        const categories = await response.json();
+        currentCategories = categories;
+
+
+        const categoryList = document.getElementById("category-list");
+
+
+        categoryList.innerHTML = "";
+
+
+        if (categoryHistory.length > 0) {
+          const backButton = document.createElement("li");
+          backButton.className =
+            "flex justify-between items-center px-4 py-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200";
+          backButton.innerHTML = `
+            <button class="text-blue-500">بازگشت</button>
+          `;
+          backButton.addEventListener("click", () => {
+            categoryHistory.pop();
+            const previousCategory = categoryHistory[categoryHistory.length - 1];
+
+
+            if (previousCategory !== undefined) {
+              const previousUrl = `http://localhost:8000/category/${previousCategory}/children/`;
+              fetchCategories(previousUrl, previousCategory);
+            } else {
+
+              fetchCategories(apiUrl);
+            }
+          });
+          categoryList.appendChild(backButton);
+        }
+
+
+        categories.forEach((category) => {
+          const listItem = document.createElement("li");
+          listItem.className =
+            "flex justify-between items-center px-4 py-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200";
+          listItem.innerHTML = `
+            <button class="text-black">${category.title}</button>
+            <span class="text-gray-600">&gt;</span>
+          `;
+          listItem.addEventListener("click", () => {
+
+            categoryHistory.push(category.id);
+            const nextUrl = `http://localhost:8000/category/${category.id}/children/`;
+            fetchCategories(nextUrl, category.id);
+          });
+          categoryList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        alert("Failed to load categories. Please try again later.");
+      }
+    }
+
+
+    fetchCategories(apiUrl);
+  </script>
+
+
+{% endblock %}
