@@ -266,15 +266,17 @@ function renderPostFields(fields) {
   fieldsTitle.classList.add("text-xl", "font-semibold", "mb-4");
   dynamicFieldsContainer.appendChild(fieldsTitle);
 
-  // Generate the fields based on API response for "title", "description", and "laddered"
+  // Generate the fields based on API response for "title", "description", "laddered", and "images"
   fields.forEach(field => {
-    if (field === "title" || field === "description" || field === "laddered") {
+    if (field === "title" || field === "description" || field === "laddered" || field === "images") {
       const fieldWrapper = document.createElement("div");
       fieldWrapper.classList.add("mb-4", "w-full");
 
       const label = document.createElement("label");
       label.textContent = field === "title" ? "عنوان" :
-                         field === "description" ? "توضیحات" : "آیا نردبانی است؟";
+                         field === "description" ? "توضیحات" :
+                         field === "laddered" ? "آیا نردبانی است؟" :
+                         "تصاویر";
       label.classList.add("block", "text-lg", "mb-2");
 
       let input;
@@ -294,6 +296,12 @@ function renderPostFields(fields) {
         input = document.createElement("input");
         input.type = "checkbox";
         input.classList.add("form-checkbox", "w-5", "h-5");
+      } else if (field === "images") {
+        input = document.createElement("input");
+        input.type = "file";
+        input.multiple = true;  // Allow multiple files
+        input.classList.add("w-full", "p-2", "bg-gray-800", "border", "border-gray-700", "rounded", "focus:outline-none", "focus:ring", "focus:ring-indigo-500");
+        input.accept = "image/*";  // Accept only images
       }
 
       fieldWrapper.appendChild(label);
