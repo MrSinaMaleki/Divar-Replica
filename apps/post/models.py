@@ -60,6 +60,9 @@ class PostImage(models.Model):
             if PostImage.objects.filter(post=self.post, is_cover=True).exclude(id=self.id).exists():
                 raise ValidationError("Only one image per post can be marked as the cover image.")
 
+        if not self.caption:
+            self.caption = self.post.title
+
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
