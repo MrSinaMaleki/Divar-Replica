@@ -413,7 +413,7 @@ async function submitPost(event) {
     "user_id": user_id,
     "location_id": areaSelect.value,
     "video": null,
-    "images": "images",
+
     "fields": all_fields
   }
   sendPostData(payload)

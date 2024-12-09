@@ -40,7 +40,7 @@ class PostFieldsAPIView(APIView):
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = AddPostSerializer
     def post(self, request, *args, **kwargs):
-        # print(request.data)
+        print(request.data)
         serializer = AddPostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
