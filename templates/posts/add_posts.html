@@ -101,5 +101,8 @@
 
 
 {% block extra_body %}
+    <script>
+            const user_id = {{ user.id }}
+    </script>
     <script src="{% static 'js/add_posts.js' %}"></script>
 {% endblock %}

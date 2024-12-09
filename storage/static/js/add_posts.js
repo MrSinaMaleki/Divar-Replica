@@ -221,6 +221,8 @@ function renderPostFieldsBelowLocation(fields) {
   fieldsTitle.classList.add("text-xl", "font-semibold", "mb-4");
   dynamicFieldsContainer.appendChild(fieldsTitle);
 
+  fields_list = fields
+
   // Generate the fields based on API response
   fields.forEach(field => {
     const fieldWrapper = document.createElement("div");
@@ -254,6 +256,7 @@ function renderPostFieldsBelowLocation(fields) {
     if (!field.is_optional) {
       input.required = true;
     }
+    input.id = field.id
 
     fieldWrapper.appendChild(label);
     fieldWrapper.appendChild(input);
@@ -345,6 +348,66 @@ function renderPostFields(fields) {
   dynamicFieldsContainer.appendChild(submitButton);
 }
 
+// console.log(user_id)
+
+async function sendPostData(payload) {
+    const url = "http://localhost:8000/post/api/create_post/"; // Replace with your API endpoint
+    const csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    try {
+        const response = await fetchWithAuth(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        // Handle the successful response
+        console.log("Post created successfully:", response);
+        //
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Post Created',
+        //     text: 'Your post has been successfully created!',
+        // });
+
+    } catch (error) {
+        console.error("Error creating post:", error);
+
+        // Swal.fire({
+        //     icon: 'error',
+        //     title: 'Error',
+        //     text: `Failed to create post: ${error.message}`,
+        // });
+    }
+}
+
+
 async function submitPost(event) {
-  console.log("submit clicked")
+  const areaSelect = document.getElementById("area");
+  const sub_subcategory = document.getElementById("sub-subcategory");
+  const titleInput = document.querySelector('input[name="title"]');
+  const description = document.querySelector('textarea[name="description"]');
+  const laddered = document.querySelector('input[name="laddered"]');
+  const all_fields = []
+
+  fields_list.forEach(inp =>{
+    all_fields.push({"field_id": inp.id, "value":document.getElementById(inp.id).value})
+  })
+
+  console.log("title", titleInput.value)
+  payload ={
+    "title": titleInput.value,
+    "description": description.value,
+    "laddered": laddered.checked,
+    "category_id": sub_subcategory.value,
+    "user_id": user_id,
+    "location_id": areaSelect.value,
+    "video": null,
+    "fields": all_fields
+  }
+  sendPostData(payload)
+
 }

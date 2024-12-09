@@ -1,7 +1,7 @@
 from apps.post.models import Post
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer
+from .serializers import PostSerializer, AddPostSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
@@ -35,3 +35,17 @@ class PostFieldsAPIView(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
             return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PostCreateAPIView(generics.CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = AddPostSerializer
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        serializer = AddPostSerializer(data=request.data)
+        if serializer.is_valid():
+            post = serializer.save()
+            return Response({"message": "Post created successfully.", "post_id": post.id}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
