@@ -7,22 +7,26 @@ from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
 from apps.category.models import Category
 from rest_framework import status
+from apps.category.models import PostField
+from apps.post.models import PostImage, Post
 
 class PostFieldsAPIView(APIView):
     permission_classes = (AllowAny,)
     def get(self, request, category_id):
         try:
-            # Fetch the category and its associated fields
-            category = Category.objects.prefetch_related('fields').get(id=category_id)
 
-            # Serialize the category fields
+            category = Category.objects.prefetch_related('fields').get(id=category_id)
+            # print("category fields",category.fields.all())
+
+
             category_fields_serializer = FieldSerializer(category.fields.all(), many=True)
 
             # Get the default post fields
             post_serializer = PostSerializer()
             post_fields = [field for field in post_serializer.get_fields()]
+            # print("def post fields: ", post_fields)
 
-            # Combine category-specific fields with post fields
+
             response_data = {
                 'post_fields': post_fields,
                 'category_fields': category_fields_serializer.data,

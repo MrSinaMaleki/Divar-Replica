@@ -88,6 +88,7 @@ class Field(models.Model):
         Category,
         on_delete=models.CASCADE,
         related_name="fields",
+        related_query_name="fields",
         verbose_name="Category",
         help_text="Only for Sub-Subcategories"
     )

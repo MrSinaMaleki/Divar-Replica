@@ -162,7 +162,7 @@ function fetchCities(provinceId) {
 }
 
 // Proceed to post form after selecting location
-function proceedToPostForm() {
+async function proceedToPostForm() {
   const provinceId = document.getElementById("province").value;
   const areaId = document.getElementById("area").value;
   const subSubCategoryId = document.getElementById("sub-subcategory").value; // Get selected sub-sub-category ID
@@ -170,14 +170,25 @@ function proceedToPostForm() {
   if (provinceId && areaId && subSubCategoryId) {
     console.log("Proceeding to additional fields...");
 
-    // Fetch additional fields for the selected sub-sub-category
-    fetch(`http://localhost:8000/post/post-fields/${subSubCategoryId}/`)
-      .then(response => response.json())
-      .then(data => {
+    try {
+      // Fetch additional fields for the selected sub-sub-category
+      const data = await fetchWithAuth(`http://localhost:8000/post/post-fields/${subSubCategoryId}/`);
+
+      // Check if category_fields and post_fields are defined and arrays
+      if (Array.isArray(data.category_fields)) {
         renderPostFieldsBelowLocation(data.category_fields);
+      } else {
+        console.error("category_fields is not an array:", data.category_fields);
+      }
+
+      if (Array.isArray(data.post_fields)) {
         renderPostFields(data.post_fields);
-      })
-      .catch(error => console.error("Error fetching post fields:", error));
+      } else {
+        console.error("post_fields is not an array:", data.post_fields);
+      }
+    } catch (error) {
+      console.error("Error fetching post fields:", error);
+    }
   } else {
     console.log("Please select province, area, and category.");
   }
@@ -190,7 +201,7 @@ function renderPostFieldsBelowLocation(fields) {
   const continue_btn = document.getElementById("continue-btn");
   province.disabled = true;
   area.disabled = true;
-  continue_btn.style.display = 'none'
+  continue_btn.style.display = 'none';
 
   const locationSelection = document.getElementById("location-selection");
 
@@ -287,15 +298,18 @@ function renderPostFields(fields) {
         input.type = "text";
         input.placeholder = "عنوان پست";
         input.classList.add("w-full", "p-2", "bg-gray-800", "border", "border-gray-700", "rounded", "focus:outline-none", "focus:ring", "focus:ring-indigo-500");
+        input.name = 'title'
       } else if (field === "description") {
         input = document.createElement("textarea");
         input.placeholder = "توضیحات پست";
         input.rows = 4;
         input.classList.add("w-full", "p-2", "bg-gray-800", "border", "border-gray-700", "rounded", "focus:outline-none", "focus:ring", "focus:ring-indigo-500");
+        input.name = 'description'
       } else if (field === "laddered") {
         input = document.createElement("input");
         input.type = "checkbox";
         input.classList.add("form-checkbox", "w-5", "h-5");
+        input.name = 'laddered'
       } else if (field === "images") {
         input = document.createElement("input");
         input.type = "file";
@@ -310,9 +324,27 @@ function renderPostFields(fields) {
     }
   });
 
+          // Add Submit Button
+      const submitButton = document.createElement("button");
+      submitButton.textContent = "ارسال آگهی";
+      submitButton.id = "submit-post-btn";
+      submitButton.classList.add(
+        "w-full",
+        "bg-green-600",
+        "hover:bg-green-700",
+        "text-white",
+        "py-2",
+        "px-4",
+        "rounded",
+        "mt-4"
+      );
+      submitButton.onclick = submitPost; // Attach the submit function
+
   // Append the dynamic form container to the location form, instead of replacing the content
   locationSelection.appendChild(dynamicFieldsContainer);
+  dynamicFieldsContainer.appendChild(submitButton);
 }
 
-
-
+async function submitPost(event) {
+  console.log("submit clicked")
+}
