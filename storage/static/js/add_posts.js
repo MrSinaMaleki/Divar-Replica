@@ -366,21 +366,23 @@ async function sendPostData(payload) {
 
         // Handle the successful response
         console.log("Post created successfully:", response);
-        //
-        // Swal.fire({
-        //     icon: 'success',
-        //     title: 'Post Created',
-        //     text: 'Your post has been successfully created!',
-        // });
+
+        Swal.fire({
+          title: 'ثبت آگهی موفقیت امیز بود',
+          text: 'آگهی مورد نظر اضافه شد',
+          icon: 'success',
+          confirmButtonText: 'اوکی',
+        })
+       location.replace('http://localhost:8000/account/login/')
 
     } catch (error) {
         console.error("Error creating post:", error);
 
-        // Swal.fire({
-        //     icon: 'error',
-        //     title: 'Error',
-        //     text: `Failed to create post: ${error.message}`,
-        // });
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `Failed to create post: ${error.message}`,
+        });
     }
 }
 

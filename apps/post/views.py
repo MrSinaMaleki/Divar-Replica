@@ -38,10 +38,9 @@ class PostFieldsAPIView(APIView):
 
 
 class PostCreateAPIView(generics.CreateAPIView):
-    permission_classes = (AllowAny,)
     serializer_class = AddPostSerializer
     def post(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         serializer = AddPostSerializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
