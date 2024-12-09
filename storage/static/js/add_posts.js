@@ -314,11 +314,16 @@ function renderPostFields(fields) {
         input.classList.add("form-checkbox", "w-5", "h-5");
         input.name = 'laddered'
       } else if (field === "images") {
-        input = document.createElement("input");
-        input.type = "file";
-        input.multiple = true;  // Allow multiple files
-        input.classList.add("w-full", "p-2", "bg-gray-800", "border", "border-gray-700", "rounded", "focus:outline-none", "focus:ring", "focus:ring-indigo-500");
-        input.accept = "image/*";  // Accept only images
+        input = document.createElement("span");
+        // input.type = "file";
+        // input.multiple = true;  // Allow multiple files
+        // input.classList.add("w-full", "p-2", "bg-gray-800", "border", "border-gray-700", "rounded", "focus:outline-none", "focus:ring", "focus:ring-indigo-500");
+        // input.accept = "image/*";  // Accept only images
+        const images_selector = document.getElementById('image-upload-section')
+        images_selector.style.display = 'flex'
+
+
+
       }
 
       fieldWrapper.appendChild(label);
@@ -408,6 +413,7 @@ async function submitPost(event) {
     "user_id": user_id,
     "location_id": areaSelect.value,
     "video": null,
+    "images": "images",
     "fields": all_fields
   }
   sendPostData(payload)

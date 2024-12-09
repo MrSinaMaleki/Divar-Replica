@@ -13,45 +13,46 @@
 
 {% block content %}
     {% csrf_token %}
+
     <div class="mt-12">
         <!-- Category Selection -->
         <div id="category-container" class="bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
-  <h1 class="text-xl font-semibold mb-4 text-center">انتخاب دسته‌بندی</h1>
+            <h1 class="text-xl font-semibold mb-4 text-center">انتخاب دسته‌بندی</h1>
 
-  <!-- Main Category Selection -->
-  <div class="mb-4 w-full">
-    <label for="main-category" class="block text-lg mb-2">دسته اصلی</label>
-    <select id="main-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubCategories(this.value)">
-      <option value="">انتخاب دسته...</option>
-    </select>
-  </div>
+        <!-- Main Category Selection -->
+        <div class="mb-4 w-full">
+          <label for="main-category" class="block text-lg mb-2">دسته اصلی</label>
+          <select id="main-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubCategories(this.value)">
+            <option value="">انتخاب دسته...</option>
+          </select>
+        </div>
 
-  <!-- Subcategory Selection -->
-  <div class="mb-4 w-full">
-    <label for="sub-category" class="block text-lg mb-2">زیرمجموعه</label>
-    <select id="sub-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubSubCategories(this.value)" disabled>
-      <option value="">انتخاب زیرمجموعه...</option>
-    </select>
-  </div>
+        <!-- Subcategory Selection -->
+        <div class="mb-4 w-full">
+          <label for="sub-category" class="block text-lg mb-2">زیرمجموعه</label>
+          <select id="sub-category" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="fetchSubSubCategories(this.value)" disabled>
+            <option value="">انتخاب زیرمجموعه...</option>
+          </select>
+        </div>
 
-  <!-- Sub-Subcategory Selection -->
-  <div class="mb-4 w-full">
-    <label for="sub-subcategory" class="block text-lg mb-2">زیر-زیرمجموعه</label>
-    <select id="sub-subcategory" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="logCategorySelection(this.value)" disabled>
-      <option value="">انتخاب زیر-زیرمجموعه...</option>
-    </select>
-  </div>
+        <!-- Sub-Subcategory Selection -->
+        <div class="mb-4 w-full">
+          <label for="sub-subcategory" class="block text-lg mb-2">زیر-زیرمجموعه</label>
+          <select id="sub-subcategory" class="w-full p-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring focus:ring-indigo-500" onchange="logCategorySelection(this.value)" disabled>
+            <option value="">انتخاب زیر-زیرمجموعه...</option>
+          </select>
+        </div>
 
-  <!-- Continue Button -->
-  <button
-    id="select-category-btn"
-    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded disabled:opacity-50"
-    onclick="showLocationSelection()"
-    disabled
-  >
-    ادامه
-  </button>
-</div>
+        <!-- Continue Button -->
+        <button
+          id="select-category-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded disabled:opacity-50"
+          onclick="showLocationSelection()"
+          disabled
+        >
+          ادامه
+        </button>
+        </div>
 
         <!-- Province and Area Selection -->
         <div id="location-selection" class="hidden bg-gray-900 text-white p-6 rounded-lg max-w-lg w-full min-h-96 mx-auto flex flex-col justify-center items-center">
@@ -90,8 +91,23 @@
             </button>
 
 
-
-
+            <div id="image-upload-section" class="w-full p-4 border border-gray-700 rounded bg-gray-800 hidden flex-col">
+  <h2 class="text-lg text-white mb-2">عکس آگهی</h2>
+  <p class="text-sm text-gray-400 mb-4">
+    افزودن عکس بازدید آگهی شما را تا سه برابر افزایش می‌دهد.
+  </p>
+  <label for="ad-images" class="block text-center border-2 border-dashed border-gray-700 py-8 rounded cursor-pointer text-gray-500 hover:text-white hover:border-indigo-500 transition">
+    <span class="block text-sm">انتخاب کنید یا عکس‌ها را بکشید و رها کنید</span>
+    <i class="fas fa-plus text-2xl mt-2"></i>
+  </label>
+  <input id="ad-images" type="file" accept="image/*" multiple class="hidden">
+  <div id="image-preview" class="mt-4 grid grid-cols-4 gap-4"></div>
+  <p class="text-xs text-gray-500 mt-2">
+    تعداد عکس‌های انتخاب شده نباید بیشتر از ۱۰ باشد.
+    <br>
+    ویرایش عکس‌ها فقط تا ۳ روز پس از انتشار ممکن است.
+  </p>
+</div>
 
         </div>
 
