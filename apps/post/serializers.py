@@ -14,13 +14,14 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class PostImagesSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField()
-    caption = serializers.CharField(required=False, allow_blank=True)
-    is_cover = serializers.BooleanField()
-
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
     class Meta:
         model = PostImage
-        fields = ['image', 'caption', 'is_cover']
+        fields = ['image', 'caption', 'is_cover', 'post']
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
 
 class PostSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.filter(level=3))

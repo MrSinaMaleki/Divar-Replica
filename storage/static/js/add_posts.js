@@ -453,8 +453,11 @@ async function sendPostData(payload) {
         // })
        // location.replace('http://localhost:8000/account/login/')
         uploadedImagesStep()
+        const uploadImagesForm = document.getElementById("uploadImagesForm");
         const submitImagebtn = document.getElementById("submitImagebtn");
-        submitImagebtn.onclick = () => submitImages(response.post_id);
+
+        uploadImagesForm.addEventListener("submit", (event) => {submitImages(event, response.post_id);
+        });
 
     } catch (error) {
         console.error("Error creating post:", error);
@@ -524,7 +527,47 @@ function uploadedImagesStep() {
 
 }
 
-function submitImages(post_id){
-  console.log("post id :", post_id)
+async function submitImages(event ,post_id){
+    event.preventDefault()
+    alert("in here ?!")
+  const formData = new FormData();
+      const files = document.getElementById("ad-images").files;
+
+      if (files.length === 0) {
+          alert("Please select at least one image.");
+          return;
+      }
+
+      // Append each file to the FormData
+        Array.from(files).forEach((file, index) => {
+            formData.append('images', file);  // Image field
+            formData.append('caption', "");  // Empty caption or a specific one
+            formData.append('is_cover', index === 0 ? 'true' : 'false');  // First image is cover
+        });
+
+
+      // Add the post ID to the form data
+      formData.append('post_id', post_id);
+        console.log("post_id", post_id)
+
+      try {
+          // Make the POST request to upload images
+          const response = await fetchWithAuth("http://localhost:8000/post/api/add_image/", {
+              method: "POST",
+              body: formData,
+          });
+
+          if (response.message === "Images were added successfully.") {
+              alert("Images uploaded successfully!");
+              console.log(response)
+              // Optionally: Redirect to another page or show the next step
+          } else {
+              console.error("Error uploading images:", response);
+              alert("Failed to upload images. Please try again.");
+          }
+      } catch (error) {
+          console.error("Failed to upload images:", error);
+          alert("An error occurred while uploading images.");
+      }
 
 }

@@ -51,14 +51,34 @@ class PostCreateAPIView(generics.CreateAPIView):
 
 
 class AddImagesAPIView(APIView):
-    # permission_classes = (AllowAny,)
     serializer_class = PostImagesSerializer
+
     def post(self, request, *args, **kwargs):
-        serializer = PostImagesSerializer(data=request.data, many=True)
+        post_id = request.data.get('post_id')
+        images = request.data.getlist('images')
+        captions = request.data.getlist('caption')
+        is_cover_list = request.data.getlist('is_cover')
+
+        if len(images) != len(captions) or len(captions) != len(is_cover_list):
+            return Response({"error": "Mismatch between number of images, captions, and cover statuses."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        image_data = []
+        for index, image in enumerate(images):
+            image_data.append({
+                'image': image,
+                'caption': captions[index] if captions[index] != 'null' else '',
+                'is_cover': is_cover_list[index] == 'true',
+                'post': post_id,
+            })
+
+        serializer = PostImagesSerializer(data=image_data, many=True)
+
         if serializer.is_valid():
             post_images = serializer.save()
-            return Response({"message": "Images were added successfully."},
-                            status=status.HTTP_201_CREATED)
+            return Response({"message": "Images were added successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
