@@ -85,9 +85,6 @@ class AddPostSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid user ID.")
 
         # Validate location
-        if not Location.objects.filter(id=data['location_id'], type=2).exists():
-            raise serializers.ValidationError("Invalid location ID.")
-
         category_id = data.get('category_id')
         if not category_id:
             raise serializers.ValidationError("Category ID is missing.")
@@ -102,7 +99,9 @@ class AddPostSerializer(serializers.ModelSerializer):
         ]
 
         if missing_fields:
-            raise serializers.ValidationError(f"Missing or empty required fields: {', '.join(missing_fields)}")
+            raise serializers.ValidationError(
+                {"fields": f"Missing or empty required fields: {', '.join(missing_fields)}"}
+            )
 
         return data
 
