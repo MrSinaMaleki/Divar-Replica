@@ -4,10 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
+    <style type="text/tailwindcss">
+      @layer components {
+        .order {
+          @apply flex items-center justify-between py-3 cursor-pointer;
+        }
+        .city-order {
+          @apply flex items-center py-3 gap-x-5;
+        }
+      }
+    </style>
   </head>
-  <body class="font-iransans_Medium">
+  <body class="font-iransans">
     <svg class="hidden">
+      <symbol
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.2"
+        stroke="currentColor"
+        class="size-6"
+        id="x-mark"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </symbol>
       <symbol
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -47,7 +73,7 @@
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        stroke-width="2.5"
         stroke="currentColor"
         class="size-6"
         id="search"
@@ -117,8 +143,24 @@
           d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036m0 0-.177-.529A2.25 2.25 0 0 0 17.128 15H16.5l-.324-.324a1.453 1.453 0 0 0-2.328.377l-.036.073a1.586 1.586 0 0 1-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 0 1-5.276 3.67m0 0a9 9 0 0 1-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25"
         />
       </symbol>
+      <symbol
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="3"
+        stroke="currentColor"
+        class="size-6"
+        id="arrow-right"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+        />
+      </symbol>
     </svg>
-    <header class="shadow py-4">
+     <!-- header -->
+     <header class="shadow py-4 font-iransans_Medium">
       <div class="flex w-full justify-center h-10">
         <div class="flex items-center h-full gap-x-4">
           <a href="#" class="h-full">
@@ -129,7 +171,9 @@
             />
           </a>
           <div class="h-6 w-[1px] bg-gray-300"></div>
+          <!-- locations -->
           <div
+            id="open-location-card"
             class="flex items-center gap-x-1 h-full rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
           >
             <span>
@@ -139,6 +183,85 @@
             </span>
             <span class="text-sm">تهران</span>
           </div>
+          <!-- choosing location -->
+          <div
+            class="absolute right-0 bottom-0 w-full h-screen bg-black/30 flex justify-center items-center"
+          >
+            <div
+              id="location-card"
+              class="w-[30.5rem] bg-white rounded m-3 sm:m-0"
+            >
+              <header class="shadow p-8 pb-4">
+                <div class="flex justify-between items-end">
+                  <span class="text-lg">انتخاب شهر</span>
+                  <span
+                    id="remove-all-cities"
+                    class="text-xs font-iransans text-dark_redwall rounded-full py-1 px-3 cursor-pointer hover:bg-red-100/40 transition-all"
+                    >حذف همه</span
+                  >
+                </div>
+                <div
+                  class="inline-flex bg-red-50/50 border border-light_redwall rounded-full my-3"
+                >
+                  <div
+                    class="flex items-center gap-x-2 font-iransans text-sm text-dark_redwall px-3 py-1"
+                  >
+                    <span>تهران</span>
+                    <span id="remove-city">
+                      <svg class="w-3 h-3 cursor-pointer">
+                        <use href="#x-mark"></use>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+                <!-- sentence of choosing location -->
+                <div
+                  id="choosing-location-sentence"
+                  class="hidden text-zinc-400 text-sm my-4 font-iransans"
+                >
+                  حداقل یک شهر را انتخاب کنید.
+                </div>
+                <div class="relative flex items-center rounded py-2 w-[436px]">
+                  <span class="absolute right-2.5">
+                    <svg class="w-4 h-4 text-zinc-400">
+                      <use href="#search"></use>
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    class="h-full w-full font-iransans text-sm rounded py-2 px-9 border border-zinc-300 hover:border-zinc-500 focus:outline-red-700/60 focus:ring-offset-2 transition-all duration-300"
+                    placeholder="جستجو در شهرها"
+                    name=""
+                    id=""
+                  />
+                </div>
+              </header>
+              <main id="province-container" class="py-3 px-8 overflow-y-auto">
+                <!-- provinces & cities list -->
+                <ul id="province" class="divide-y-2 font-iransans"></ul>
+              </main>
+              <footer
+                class="px-4 py-4 flex justify-center gap-x-4 shadow-normal"
+              >
+                <button
+                  id="cancel"
+                  type="button"
+                  class="bg-white text-zinc-500 w-full h-10 leading-10 rounded px-4 cursor-pointer border border-zinc-500 hover:bg-zinc-100 hover:text-black transition-all duration-300"
+                >
+                  انصراف
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  class="disabled:bg-zinc-100 disabled:text-zinc-400 disabled:border-slate-200 disabled:shadow-none w-full h-10 leading-10 rounded px-4 cursor-not-allowed hover: transition-all"
+                >
+                  تأیید
+                </button>
+              </footer>
+            </div>
+          </div>
+
+          <!-- categories -->
           <div
             class="flex items-center text-sm gap-x-2 h-full rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
           >
@@ -152,11 +275,11 @@
         </div>
         <div class="flex items-center mr-4">
           <div
-            class="flex items-center justify-between px-2 bg-zinc-300 w-[436px] h-full rounded"
+            class="flex items-center justify-between px-2 bg-zinc-200 w-[436px] h-full rounded"
           >
             <input
               type="text"
-              class="bg-zinc-300 h-full font-iransans text-sm px-1 outline-none"
+              class="bg-zinc-200 h-full font-iransans text-sm px-1 outline-none"
               placeholder="جستجو در همه آگهی ها"
               name=""
               id=""
@@ -219,5 +342,193 @@
         </div>
       </div>
     </header>
+
+    <script>
+      let loginclosebtn = document.querySelector(".close");
+let verifyclosebtn = document.querySelector(".close-verify");
+let emailInput = document.querySelector(".mail");
+let acceptbtn = document.querySelector(".accept");
+let responseMailValidate = document.querySelector(".responseMail");
+let frmContainerLogin = document.querySelector(".formcontainer-login ");
+let frmContainerverify = document.querySelector(".formcontainer-verify ");
+let loginSection = document.querySelector(".login-section");
+let verifySection = document.querySelector(".verify-section");
+let timer = document.querySelector(".timer");
+let requestBtn = document.querySelector(".request-btn");
+let changeAddr = document.querySelector(".change-addr");
+//
+//
+// header js
+let locationCard = document.querySelector("#location-card");
+let provinceList = document.querySelector("#province");
+let provinceContainer = document.querySelector("#province-container");
+let openLocationCardBtn = document.querySelector("#open-location-card");
+let cancelBtn = document.querySelector("#cancel");
+let removeAllCitiesBtn = document.querySelector("#remove-all-cities");
+let removeCityBtn = document.querySelector("#remove-city");
+let choosingLocationSentence = document.querySelector(
+  "#choosing-location-sentence"
+);
+
+let set;
+addEventListener("DOMContentLoaded", () => {
+  let result = provinces();
+  result.catch((error) => console.log(error));
+});
+loginclosebtn.addEventListener("click", logincloseFrm);
+verifyclosebtn.addEventListener("click", verifycloseFrm);
+
+addEventListener("load", () => adjustCards(frmContainerLogin, 144));
+addEventListener("resize", () => adjustCards(frmContainerLogin, 144));
+
+addEventListener("load", () => adjustCards(frmContainerverify, 144));
+addEventListener("resize", () => adjustCards(frmContainerverify, 144));
+
+addEventListener("load", () => adjustCards(provinceContainer, 360));
+addEventListener("resize", () => adjustCards(provinceContainer, 360));
+
+acceptbtn.addEventListener("click", () => {
+  let email = emailInput.value;
+  if (emailValidation(email)) {
+    loginSection.style.display = "none";
+    verifySection.style.display = "flex";
+    timerCounter();
+  } else {
+    responseMailValidate.innerHTML = "لطفا ایمیل خود را به درستی وارد کنید";
+    emailInput.style.borderColor = "red";
+  }
+});
+requestBtn.addEventListener("click", () => {
+  timer.parentElement.style.display = "flex";
+  requestBtn.style.display = "none";
+  timerCounter();
+});
+
+changeAddr.addEventListener("click", () => {
+  loginSection.style.display = "flex";
+  verifySection.style.display = "none";
+});
+cancelBtn.addEventListener("click", () => {
+  locationCard.parentNode.style.display = "none";
+  provinces();
+});
+openLocationCardBtn.addEventListener("click", () => {
+  locationCard.parentNode.style.display = "flex";
+});
+removeCityBtn.addEventListener("click", () => {
+  removeCityBtn.parentNode.parentNode.style.display = "none";
+  choosingLocationSentence.style.display = "block";
+});
+
+function logincloseFrm() {
+  loginSection.style.background = "none";
+  loginSection.style.display = "none";
+}
+function verifycloseFrm() {
+  verifySection.style.background = "none";
+  verifySection.style.display = "none";
+}
+function emailValidation(email) {
+  const ke =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return ke.test(String(email));
+}
+function adjustCards(frm, maxValue) {
+  let vh = innerHeight;
+  frm.style.maxHeight = vh - maxValue + "px";
+}
+function timerCounter() {
+  timer.innerHTML = "30";
+  let time = Number(timer.innerHTML);
+  if (set) clearInterval(set);
+  set = setInterval(() => {
+    if (time != 0) {
+      time = time - 1;
+      timer.innerHTML = time;
+    } else {
+      clearInterval(set);
+      timer.parentElement.style.display = "none";
+      requestBtn.style.display = "inline-flex";
+    }
+  }, 1000);
+}
+async function provinces() {
+  let response = await fetch("http://127.0.0.1:8000/location/");
+  let provinces = await response.json();
+
+  // نمایش لیست استان‌ها
+  function renderProvinces() {
+    provinceList.innerHTML = ""; // پاک‌کردن محتوا
+
+    provinces
+      .filter((item) => item.type === 1)
+      .forEach((province) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          province.title +
+          `  <svg class="w-4 h-4 cursor-pointer text-zinc-500 rotate-90">
+        <use href="#chevron-down"></use>
+      </svg>`;
+        li.classList.add("order");
+        li.addEventListener("click", () =>
+          renderCities(province.id, province.title)
+        );
+        provinceList.appendChild(li);
+      });
+  }
+
+  // نمایش شهرهای استان
+  function renderCities(provinceId, provinceName) {
+    provinceList.innerHTML = ""; // پاک‌کردن محتوا
+
+    // افزودن دکمه "همه شهرها" و "شهرهای استان"
+    const allCitiesButton = document.createElement("li");
+    allCitiesButton.innerHTML =
+      `<svg class="w-4 h-4 cursor-pointer text-zinc-500">
+    <use href="#arrow-right"></use>
+  </svg>` + "همه‌ی شهرها";
+    allCitiesButton.classList.add("city-order");
+    allCitiesButton.addEventListener("click", renderProvinces);
+    provinceList.appendChild(allCitiesButton);
+
+    const provinceCitiesHeader = document.createElement("li");
+    provinceCitiesHeader.innerHTML =
+      `شهرهای استان ${provinceName}` +
+      `  <span
+        class="flex justify-center items-center w-8 h-8 rounded-full transition-all"
+       >
+          <input
+            class="w-4 h-4 cursor-pointer accent-light_redwall"
+            type="checkbox"
+          />
+       </span>`;
+    provinceCitiesHeader.classList.add("order");
+    provinceList.appendChild(provinceCitiesHeader);
+    // افزودن لیست شهرها
+    const ul = document.createElement("ul");
+    provinces
+      .filter((item) => item.type === 2 && item.parent === provinceId)
+      .forEach((city) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          city.title +
+          `<span
+        class="flex justify-center items-center w-8 h-8 rounded-full transition-all"
+       >
+          <input
+            class="w-4 h-4 cursor-pointer accent-light_redwall"
+            type="checkbox"
+          />
+       </span>`;
+        li.classList.add("order");
+        provinceList.appendChild(li);
+      });
+  }
+
+  // شروع با لیست استان‌ها
+  renderProvinces();
+}
+
+    </script>
   </body>
 </html>
