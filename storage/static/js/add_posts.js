@@ -442,15 +442,16 @@ async function sendPostData(payload) {
             body: JSON.stringify(payload),
         });
 
+        Swal.fire({
+          title: 'ثبت آگهی موفقیت امیز بود',
+          text: 'آگهی مورد نظر اضافه شد',
+          icon: 'success',
+          confirmButtonText: 'اوکی',
+        })
         // Handle the successful response
         console.log("Post created successfully:", response);
 
-        // Swal.fire({
-        //   title: 'ثبت آگهی موفقیت امیز بود',
-        //   text: 'آگهی مورد نظر اضافه شد',
-        //   icon: 'success',
-        //   confirmButtonText: 'اوکی',
-        // })
+
        // location.replace('http://localhost:8000/account/login/')
         uploadedImagesStep()
         const uploadImagesForm = document.getElementById("uploadImagesForm");
@@ -529,7 +530,6 @@ function uploadedImagesStep() {
 
 async function submitImages(event ,post_id){
     event.preventDefault()
-    alert("in here ?!")
   const formData = new FormData();
       const files = document.getElementById("ad-images").files;
 
@@ -558,9 +558,14 @@ async function submitImages(event ,post_id){
           });
 
           if (response.message === "Images were added successfully.") {
-              alert("Images uploaded successfully!");
-              console.log(response)
-              // Optionally: Redirect to another page or show the next step
+            Swal.fire({
+              title: 'ثبت عکس های آگهی موفقیت امیز بود',
+              text: '',
+              icon: 'success',
+              confirmButtonText: 'ادامه',
+            })
+              setTimeout(() => location.replace('http://localhost:8000/'), 3000)
+
           } else {
               console.error("Error uploading images:", response);
               alert("Failed to upload images. Please try again.");

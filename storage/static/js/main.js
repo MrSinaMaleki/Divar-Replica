@@ -97,6 +97,6 @@ function getCookie(name) {
 }
 
 function redirectToSignup() {
-    location.replace(`http://localhost:8000/account/login/`);
+    fullForm.style.display = 'block'
 }
 
