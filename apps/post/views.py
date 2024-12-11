@@ -1,12 +1,13 @@
 from apps.post.models import Post
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, AddPostSerializer
+from .serializers import PostSerializer, AddPostSerializer, PostImagesSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
 from apps.category.models import Category
 from rest_framework import status
+from apps.post.models import PostImage
 from apps.category.models import PostField
 from apps.post.models import PostImage, Post
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -46,6 +47,18 @@ class PostCreateAPIView(generics.CreateAPIView):
         if serializer.is_valid():
             post = serializer.save()
             return Response({"message": "Post created successfully.", "post_id": post.id}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddImagesAPIView(APIView):
+    # permission_classes = (AllowAny,)
+    serializer_class = PostImagesSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = PostImagesSerializer(data=request.data, many=True)
+        if serializer.is_valid():
+            post_images = serializer.save()
+            return Response({"message": "Images were added successfully."},
+                            status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
