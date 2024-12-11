@@ -9,6 +9,7 @@ from apps.category.models import Category
 from rest_framework import status
 from apps.category.models import PostField
 from apps.post.models import PostImage, Post
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class PostFieldsAPIView(APIView):
     permission_classes = (AllowAny,)

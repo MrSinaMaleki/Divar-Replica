@@ -3,6 +3,79 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchProvinces();
 });
 
+// Get the image input and preview elements
+const imageInput = document.getElementById("ad-images");
+const imagePreview = document.getElementById("image-preview");
+
+let uploadedImages = []; // This will store the uploaded files
+
+// Function to handle image input change
+function handleImageUpload(event) {
+  // Clear previous previews
+  imagePreview.innerHTML = "";
+
+  // Get the files selected by the user
+  const files = Array.from(event.target.files);
+
+  // Limit to a maximum of 10 images
+  if (files.length + uploadedImages.length > 10) {
+    alert("تعداد عکس‌های انتخاب شده نباید بیشتر از ۱۰ باشد.");
+    return;
+  }
+
+  // Add new files to the uploaded images array
+  uploadedImages = [...uploadedImages, ...files];
+
+  // Display image previews
+  files.forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const imgWrapper = document.createElement("div");
+      imgWrapper.classList.add("relative", "w-full", "h-28", "overflow-hidden", "rounded", "bg-gray-700");
+
+      const img = document.createElement("img");
+      img.src = e.target.result;
+      img.classList.add("w-full", "h-full", "object-cover");
+
+      const removeButton = document.createElement("button");
+      removeButton.textContent = "×";
+      removeButton.classList.add(
+        "absolute", "top-1", "right-1", "bg-red-500", "text-white",
+        "text-xs", "p-1", "rounded-full", "hover:bg-red-700", "transition"
+      );
+
+      removeButton.addEventListener("click", () => removeImage(file, imgWrapper));
+
+      imgWrapper.appendChild(img);
+      imgWrapper.appendChild(removeButton);
+      imagePreview.appendChild(imgWrapper);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// Function to remove an image from the uploaded list
+function removeImage(file, imgWrapper) {
+  // Remove the file from the uploaded images array
+  uploadedImages = uploadedImages.filter(uploadedFile => uploadedFile !== file);
+
+  // Remove the image wrapper from the DOM
+  imgWrapper.remove();
+}
+
+// Attach the event listener to the image input
+imageInput.addEventListener("change", handleImageUpload);
+
+// Optional: If you're using drag-and-drop functionality, you can add this listener too
+imagePreview.addEventListener("dragover", (e) => e.preventDefault());
+imagePreview.addEventListener("drop", (e) => {
+  e.preventDefault();
+  const files = Array.from(e.dataTransfer.files);
+  imageInput.files = e.dataTransfer.files; // Update the input field files (required for handling)
+  handleImageUpload({ target: { files } }); // Simulate the input change event
+});
 
 function fetchMainCategories() {
   fetch("http://localhost:8000/category/main_categories/")
@@ -372,13 +445,16 @@ async function sendPostData(payload) {
         // Handle the successful response
         console.log("Post created successfully:", response);
 
-        Swal.fire({
-          title: 'ثبت آگهی موفقیت امیز بود',
-          text: 'آگهی مورد نظر اضافه شد',
-          icon: 'success',
-          confirmButtonText: 'اوکی',
-        })
-       location.replace('http://localhost:8000/account/login/')
+        // Swal.fire({
+        //   title: 'ثبت آگهی موفقیت امیز بود',
+        //   text: 'آگهی مورد نظر اضافه شد',
+        //   icon: 'success',
+        //   confirmButtonText: 'اوکی',
+        // })
+       // location.replace('http://localhost:8000/account/login/')
+        uploadedImagesStep()
+        const submitImagebtn = document.getElementById("submitImagebtn");
+        submitImagebtn.onclick = () => submitImages(response.post_id);
 
     } catch (error) {
         console.error("Error creating post:", error);
@@ -399,12 +475,30 @@ async function submitPost(event) {
   const description = document.querySelector('textarea[name="description"]');
   const laddered = document.querySelector('input[name="laddered"]');
   const all_fields = []
+  const all_images = []
 
   fields_list.forEach(inp =>{
     all_fields.push({"field_id": inp.id, "value":document.getElementById(inp.id).value})
   })
 
-  console.log("title", titleInput.value)
+  let index = 0;
+  uploadedImages.forEach(imgg =>{
+    if (index > 0){
+      var is_cover = false
+    }else{
+      is_cover = true
+    }
+
+   all_images.push(
+       {
+      "image": imageInput.files[index],
+      "caption": "",
+      "is_cover": is_cover,
+      },)
+      index += 1
+  })
+  console.log("all_images: ",all_images)
+
   payload ={
     "title": titleInput.value,
     "description": description.value,
@@ -413,9 +507,24 @@ async function submitPost(event) {
     "user_id": user_id,
     "location_id": areaSelect.value,
     "video": null,
-
     "fields": all_fields
   }
   sendPostData(payload)
+
+}
+
+
+function uploadedImagesStep() {
+  const postInfoForm = document.getElementById("location-selection");
+  postInfoForm.classList.add("hidden");
+
+
+  const uploadImagesForm = document.getElementById("uploadImagesForm")
+  uploadImagesForm.classList.remove("hidden")
+
+}
+
+function submitImages(post_id){
+  console.log("post id :", post_id)
 
 }

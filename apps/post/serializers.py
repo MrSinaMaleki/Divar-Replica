@@ -14,9 +14,13 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class PostImagesSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+    caption = serializers.CharField(required=False, allow_blank=True)
+    is_cover = serializers.BooleanField()
+
     class Meta:
         model = PostImage
-        fields = ['id', 'caption', 'is_cover', 'uploaded_at']
+        fields = ['image', 'caption', 'is_cover']
 
 class PostSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.filter(level=3))
@@ -61,13 +65,12 @@ class AddPostSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
     location_id = serializers.IntegerField()
     fields = PostFieldSerializer(many=True, required=False)
-    images = PostImagesSerializer(many=True, required=False)
 
     class Meta:
         model = Post
         fields = [
             'title', 'description', 'laddered', 'category_id', 'user_id',
-            'location_id', 'video', 'fields', 'images'
+            'location_id', 'video', 'fields'
         ]
 
     def validate(self, data):
@@ -97,13 +100,13 @@ class AddPostSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # Extract fields
+        # Extract fields and images data
         fields_data = validated_data.pop('fields', [])
         category = Category.objects.get(id=validated_data['category_id'])
         user = User.objects.get(id=validated_data['user_id'])
         location = Location.objects.get(id=validated_data['location_id'])
 
-        # Create post
+        # Create the post
         post = Post.objects.create(
             title=validated_data['title'],
             description=validated_data['description'],
