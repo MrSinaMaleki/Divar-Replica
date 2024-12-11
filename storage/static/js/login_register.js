@@ -13,6 +13,12 @@ let changeAddr = document.querySelector(".change-addr");
 let codeInp = document.querySelector("#codeInp");
 let enterbtn = document.querySelector("#enterbtn")
 let set;
+const fullForm = document.getElementById('fullform')
+if (is_loggedIn === 'True'){
+  console.log(is_loggedIn)
+  fullForm.style.display = 'none'
+}
+
 
 loginclosebtn.addEventListener("click", logincloseFrm);
 verifyclosebtn.addEventListener("click", verifycloseFrm);
@@ -111,7 +117,6 @@ async function sendLoginCode(email) {
     return { success: false, message: "An error occurred while sending the request" };
   }
 }
-
 
 async function verifyCode(email, code) {
   const apiUrl = "http://localhost:8000/account/verifyAPI/"; // Replace with your actual API endpoint

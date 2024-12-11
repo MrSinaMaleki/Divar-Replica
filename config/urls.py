@@ -26,6 +26,9 @@ from apps.core.views import LocationList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+
     path('account/', include('apps.account.urls')),
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
@@ -33,7 +36,6 @@ urlpatterns = [
     path('api/swagger-api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
-    path('temp/', TemplateView.as_view(template_name='temp.html'), name='temp'),
 
     path('category/', include('apps.category.urls'), name='category'),
     path('location/', LocationList.as_view(), name='location'),
