@@ -1,7 +1,9 @@
+from rest_framework.generics import RetrieveAPIView
+
 from apps.post.models import Post
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, AllPostsSerializer,AddPostSerializer, PostImagesSerializer
+from .serializers import PostSerializer,PostDetailSerializer, AllPostsSerializer,AddPostSerializer, PostImagesSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
@@ -10,6 +12,7 @@ from rest_framework import status
 from apps.post.models import PostImage
 from apps.category.models import PostField
 from apps.post.models import PostImage, Post
+from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 
 class PostFieldsAPIView(APIView):
@@ -83,5 +86,18 @@ class AllPosts(generics.ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = AllPostsSerializer
     queryset = Post.objects.all()
+
+
+
+class PostDetails(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
+    permission_classes = [AllowAny, ]
+
+    def get_object(self):
+        post_id = self.kwargs.get('id')
+        print(post_id)
+
+        return get_object_or_404(Post, id=post_id)
 
 

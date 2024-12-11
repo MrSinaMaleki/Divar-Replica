@@ -133,10 +133,7 @@ class AddPostSerializer(serializers.ModelSerializer):
 
 
 class AllPostsSerializer(serializers.ModelSerializer):
-    # user = UserSerializer(read_only=True)
     images = PostImagesSerializer(many=True, read_only=True)
-    # fields = PostFieldSerializer(many=True, read_only=True)
-    # category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -145,12 +142,31 @@ class AllPostsSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'laddered',
-            # 'status',
-            # 'category',
             'user',
             'location',
             'created_at',
-            # 'video',
             'images',
-            # 'fields',
+
+        ]
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    images = PostImagesSerializer(many=True, read_only=True)
+    fields = PostFieldSerializer(many=True, read_only=True)
+    category = CategorySerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'title',
+            'description',
+            'laddered',
+            'category',
+            'user',
+            'location',
+            'created_at',
+            'video',
+            'images',
+            'fields',
         ]

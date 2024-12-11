@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% csrf_token %}
+
+{% block title %}
+	Post Detail
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+
+{% block content %}
+    {% csrf_token %}
+
+
+{% endblock %}
+
+
+{% block extra_body %}
+
+ <script>
+     console.log({{ id }})
+ </script>
+
+{% endblock %}
