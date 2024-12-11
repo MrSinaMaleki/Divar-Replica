@@ -1,7 +1,7 @@
 from apps.post.models import Post
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, AddPostSerializer, PostImagesSerializer
+from .serializers import PostSerializer, AllPostsSerializer,AddPostSerializer, PostImagesSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
@@ -79,6 +79,9 @@ class AddImagesAPIView(APIView):
             return Response({"message": "Images were added successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+class AllPosts(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = AllPostsSerializer
+    queryset = Post.objects.all()
 
 

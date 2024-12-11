@@ -4,13 +4,14 @@ from apps.category.models import Field, Category,PostField
 from apps.core.models import Location
 from apps.post.models import Post, PostImage
 from django.contrib.auth import get_user_model
+from apps.account.serializers import  UserSerializer
 User = get_user_model()
 
 
 class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
-        fields = ['id', 'name', 'is_optional', 'value']
+        fields = ['id', 'name', 'is_optional']
 
 
 class PostImagesSerializer(serializers.ModelSerializer):
@@ -129,3 +130,27 @@ class AddPostSerializer(serializers.ModelSerializer):
             PostField.objects.create(post=post, field=field, value=field_data['value'])
 
         return post
+
+
+class AllPostsSerializer(serializers.ModelSerializer):
+    # user = UserSerializer(read_only=True)
+    images = PostImagesSerializer(many=True, read_only=True)
+    # fields = PostFieldSerializer(many=True, read_only=True)
+    # category = CategorySerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'title',
+            'description',
+            'laddered',
+            # 'status',
+            # 'category',
+            'user',
+            'location',
+            'created_at',
+            # 'video',
+            'images',
+            # 'fields',
+        ]
