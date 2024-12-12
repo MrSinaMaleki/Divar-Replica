@@ -128,7 +128,7 @@ class Field(models.Model):
 
 
 class PostField(models.Model):
-    post = models.ForeignKey('post.Post', on_delete=models.CASCADE)
+    post = models.ForeignKey('post.Post', on_delete=models.CASCADE, related_name='fields', related_query_name='fields')
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     value = models.TextField(blank=True, null=True, verbose_name="Post Field Value")
 

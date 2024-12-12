@@ -12,6 +12,52 @@
 
 {% block content %}
     {% csrf_token %}
+ <div class="min-h-screen bg-gray-100 flex flex-col items-center py-10">
+  <!-- Post Details Section -->
+  <div class="bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6">
+    <h1 id="post-title" class="text-2xl font-bold text-gray-800 mb-4">Post Title</h1>
+    <p id="post-description" class="text-gray-600 mb-6">Post description will appear here.</p>
+
+    <!-- Category Info -->
+    <div class="border-t border-gray-200 pt-4">
+      <h2 class="text-xl font-semibold text-gray-700 mb-2">Category</h2>
+      <p id="category-title" class="text-gray-500 mb-2">Category title here</p>
+      <ul id="category-fields" class="text-gray-500 list-disc ml-6">
+        <!-- Dynamic category fields will be populated here -->
+      </ul>
+    </div>
+
+    <!-- Created Date -->
+    <p id="created-at-date" class="text-gray-400 text-sm mt-4">
+      Created at: <span>Loading...</span>
+    </p>
+  </div>
+
+  <!-- Post Images Section -->
+  <div class="mt-10 bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Images</h2>
+    <div id="post-images" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- Dynamic images will be populated here -->
+    </div>
+  </div>
+
+  <!-- Contact Info Section -->
+  <div id="contact-info" class="hidden mt-10 bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Contact Information</h2>
+    <p id="contact-name" class="text-gray-600 mb-2">Name: Loading...</p>
+    <p id="contact-email" class="text-gray-600">Email: Loading...</p>
+  </div>
+
+  <!-- Contact Button -->
+  <button
+    id="contact-button"
+    class="mt-6 bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 focus:ring focus:ring-indigo-300 focus:outline-none"
+  >
+    اطلاعات تماس
+  </button>
+</div>
+
+
 
 
 {% endblock %}
@@ -20,7 +66,77 @@
 {% block extra_body %}
 
  <script>
-     console.log({{ id }})
+     {#console.log({{ id }})#}
+     const postId = {{ id }}; // Replace dynamically as needed
+const postDetailUrl = `http://localhost:8000/post/api/post_detail/${postId}`;
+const postOwnerUrl = `http://localhost:8000/post/api/post_detail/${postId}/owner`;
+
+// Fetch post details
+async function fetchPostDetails() {
+  try {
+    const data = await fetchWithAuth(postDetailUrl, { method: "GET" });
+
+    // Populate post details
+    document.getElementById("post-title").textContent = data.title;
+    document.getElementById("post-description").textContent = data.description;
+    document.getElementById("category-title").textContent = data.category.title;
+
+    // Populate category fields
+    const fieldsContainer = document.getElementById("category-fields");
+    fieldsContainer.innerHTML = ""; // Clear existing content
+    data.category.fields.forEach((field) => {
+      const li = document.createElement("li");
+      li.textContent = `${field.name} (${field.is_optional ? "Optional" : "Required"})`;
+      fieldsContainer.appendChild(li);
+    });
+
+    // Populate created date
+    document.getElementById("created-at-date").textContent = `Created at: ${new Date(
+      data.created_at
+    ).toLocaleString()}`;
+
+    // Populate images
+    const imagesContainer = document.getElementById("post-images");
+    imagesContainer.innerHTML = ""; // Clear existing images
+    data.images.forEach((image) => {
+      const imgElement = document.createElement("img");
+      imgElement.src = image.image;
+      imgElement.alt = image.caption || "Post Image";
+      imgElement.className = "w-full h-auto rounded shadow";
+      imagesContainer.appendChild(imgElement);
+    });
+  } catch (error) {
+    console.error("Failed to fetch post details:", error);
+  }
+}
+
+// Fetch post owner's info
+async function fetchPostOwner() {
+  try {
+    const data = await fetchWithAuth(postOwnerUrl, { method: "GET" });
+
+    // Populate contact information
+    document.getElementById("contact-name").textContent = `Name: ${
+      data.user.first_name || "N/A"
+    } ${data.user.last_name || ""}`;
+    document.getElementById("contact-email").textContent = `Email: ${
+      data.user.email || "N/A"
+    }`;
+
+    // Show the contact info section
+    document.getElementById("contact-info").classList.remove("hidden");
+  } catch (error) {
+    console.error("Failed to fetch post owner info:", error);
+  }
+}
+
+// Event listener for the contact button
+document.getElementById("contact-button").addEventListener("click", fetchPostOwner);
+
+// Fetch post details on page load
+fetchPostDetails();
+
+
  </script>
 
 {% endblock %}
