@@ -31,6 +31,8 @@ async function fetchWithAuth(url, options = {}) {
             title: 'Error',
             text: `Something went wrong: ${error.message}`,
         });
+        fullForm.style.display = 'block'
+        redirectToSignup()
 
         throw error;
     }
