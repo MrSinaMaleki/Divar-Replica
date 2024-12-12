@@ -40,6 +40,7 @@ urlpatterns = [
     path('category/', include('apps.category.urls'), name='category'),
     path('location/', LocationList.as_view(), name='location'),
     path('post/', include('apps.post.urls'), name='post'),
+    path('bookmarks/', include('apps.bookmark.urls'), name='bookmark'),
 ]
 
 if settings.DEBUG:
