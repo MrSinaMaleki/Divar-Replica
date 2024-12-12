@@ -150,7 +150,7 @@ class AllPostsSerializer(serializers.ModelSerializer):
         ]
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     images = PostImagesSerializer(many=True, read_only=True)
     fields = PostFieldSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
@@ -170,3 +170,11 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'images',
             'fields',
         ]
+
+
+class PostOwnerDetailSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    class Meta:
+        model = Post
+        fields = ['id','user']
+

@@ -3,7 +3,7 @@ from rest_framework.generics import RetrieveAPIView
 from apps.post.models import Post
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer,PostDetailSerializer, AllPostsSerializer,AddPostSerializer, PostImagesSerializer
+from .serializers import PostSerializer,PostDetailSerializer, AllPostsSerializer,AddPostSerializer, PostImagesSerializer, PostOwnerDetailSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from apps.category.serializers import FieldSerializer
@@ -96,8 +96,15 @@ class PostDetails(RetrieveAPIView):
 
     def get_object(self):
         post_id = self.kwargs.get('id')
-        print(post_id)
-
         return get_object_or_404(Post, id=post_id)
 
+
+class PostOwnerDetails(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostOwnerDetailSerializer
+
+
+    def get_object(self):
+        post_id = self.kwargs.get('id')
+        return get_object_or_404(Post, id=post_id)
 
