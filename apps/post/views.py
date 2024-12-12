@@ -16,6 +16,42 @@ from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 
 class PostFieldsAPIView(APIView):
+    """
+             - example response
+
+                    {
+                        "post_fields": [
+                            "title",
+                            "description",
+                            "laddered",
+                            "category",
+                            "user",
+                            "location",
+                            "fields",
+                            "images"
+                        ],
+                        "category_fields": [
+                            {
+                                "category": 3,
+                                "name": "درصد باتری",
+                                "is_optional": false,
+                                "f_type": "int",
+                                "drop_down_menu_options": null,
+                                "id": 1
+                            },
+                            {
+                                "category": 3,
+                                "name": "رنگ",
+                                "is_optional": true,
+                                "f_type": "str",
+                                "drop_down_menu_options": null,
+                                "id": 2
+                            }
+                        ]
+                    }
+
+    """
+
     permission_classes = (AllowAny,)
     def get(self, request, category_id):
         try:
@@ -43,6 +79,23 @@ class PostFieldsAPIView(APIView):
 
 
 class PostCreateAPIView(generics.CreateAPIView):
+    """
+                 - example response
+
+                       {
+                            "title": "",
+                            "description": "",
+                            "laddered": false,
+                            "category_id": null,
+                            "user_id": null,
+                            "location_id": null,
+                            "video": null,
+                            "fields": []
+                       }
+
+    """
+
+
     serializer_class = AddPostSerializer
     def post(self, request, *args, **kwargs):
         print(request.data)
@@ -83,6 +136,21 @@ class AddImagesAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AllPosts(generics.ListAPIView):
+    """
+                     - example response
+
+                          {
+                            "id": 1,
+                            "title": "Iphone 16",
+                            "description": "تست توضیحات :)",
+                            "laddered": false,
+                            "user": 1,
+                            "location": 77,
+                            "created_at": "2024-12-11T14:34:16.349094+03:30",
+                            "images": []
+                          },
+
+    """
     permission_classes = (AllowAny,)
     serializer_class = AllPostsSerializer
     queryset = Post.objects.all()
@@ -90,6 +158,51 @@ class AllPosts(generics.ListAPIView):
 
 
 class PostDetails(RetrieveAPIView):
+    """
+        - example response
+
+            {
+                "id": 7,
+                "title": "iphone",
+                "description": "w[dkwd",
+                "laddered": false,
+                "category": {
+                    "id": 3,
+                    "title": "موبایل ایفون",
+                    "level": 3,
+                    "fields": [
+                        {
+                            "id": 1,
+                            "name": "درصد باتری",
+                            "is_optional": false
+                        },
+                        {
+                            "id": 2,
+                            "name": "رنگ",
+                            "is_optional": true
+                        }
+                    ]
+                },
+                "user": 1,
+                "location": 46,
+                "created_at": "2024-12-11T23:40:35.895583+03:30",
+                "video": null,
+                "images": [
+                    {
+                        "image": "http://localhost:8000/storage/media/images/2024/12/11/car_it3TRNa.png",
+                        "caption": "iphone",
+                        "is_cover": true,
+                        "post": 7
+                    },
+                    {
+                        "image": "http://localhost:8000/storage/media/images/2024/12/11/MainAfter_3Cip7Z7.jpg",
+                        "caption": "iphone",
+                        "is_cover": false,
+                        "post": 7
+                    }
+                ]
+            }
+    """
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     permission_classes = [AllowAny, ]
@@ -100,6 +213,22 @@ class PostDetails(RetrieveAPIView):
 
 
 class PostOwnerDetails(RetrieveAPIView):
+    """
+            - example response
+
+                {
+                    "id": 7,
+                    "user": {
+                        "id": 1,
+                        "username": null,
+                        "email": "s@gmail.com",
+                        "first_name": "",
+                        "last_name": ""
+                    }
+                }
+
+    """
+    permission_classes = (AllowAny,)
     queryset = Post.objects.all()
     serializer_class = PostOwnerDetailSerializer
 
