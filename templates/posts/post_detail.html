@@ -12,162 +12,182 @@
 
 {% block content %}
     {% csrf_token %}
-<div class="min-h-screen bg-gray-100 flex flex-col items-center py-10">
-  <!-- Post Details Section -->
-  <div class="bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6 text-right">
-    <h1 id="post-title" class="text-2xl font-bold text-gray-800 mb-4">عنوان آگهی</h1>
-    <p id="post-description" class="text-gray-600 mb-6">توضیحات آگهی اینجا نمایش داده می‌شود.</p>
+<div class="min-h-screen bg-gray-900 flex flex-col items-center py-10 text-gray-100">
+  <!-- Main Container -->
+  <div class="w-11/12 max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <div class="flex flex-col lg:flex-row">
+      <!-- Image Section -->
+      <div class="w-full lg:w-2/3 p-4">
+        <img id="main-post-image" src="https://via.placeholder.com/600x400" alt="Post Image" class="rounded-lg mb-4 hidden">
+        <div id="post-images" class="grid grid-cols-3 gap-2">
+          <!-- Images populated dynamically -->
+        </div>
+      </div>
 
-    <!-- Category Info -->
-    <div class="border-t border-gray-200 pt-4">
-      <h2 class="text-xl font-semibold text-gray-700 mb-2">دسته‌بندی</h2>
-      <p id="category-title" class="text-gray-500">عنوان دسته‌بندی اینجا نمایش داده می‌شود</p>
-    </div>
+      <!-- Details Section -->
+      <div class="w-full lg:w-1/3 bg-gray-700 p-6 text-right">
+        <h1 id="post-title" class="text-2xl font-bold mb-4">عنوان آگهی</h1>
+        <ul class="text-gray-300 mb-6">
+          <li id="category-title" class="mb-2 font-semibold">دسته‌بندی: در حال بارگذاری...</li>
+          <li id="created-at-date" class="mb-2">تاریخ ایجاد: در حال بارگذاری...</li>
+        </ul>
 
-    <!-- Fields -->
-    <div id="fields-container" class="border-t border-gray-200 pt-4 hidden">
-      <h2 class="text-xl font-semibold text-gray-700 mb-2">ویژگی‌ها</h2>
-      <ul id="fields-list" class="text-gray-500 list-disc ml-6">
-        <!-- Dynamic fields will be populated here -->
-      </ul>
-    </div>
+        <div id="fields-container" class="mb-4 hidden">
+          <h2 class="text-lg font-bold text-gray-200 mb-2">ویژگی‌ها</h2>
+          <ul id="fields-list" class="text-gray-300">
+            <!-- Fields populated dynamically -->
+          </ul>
+        </div>
 
-    <!-- Created Date -->
-    <p id="created-at-date" class="text-gray-400 text-sm mt-4">
-      تاریخ ایجاد: <span>در حال بارگذاری...</span>
-    </p>
-  </div>
+        <button id="contact-button" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition">
+          اطلاعات تماس
+        </button>
 
-  <!-- Post Images Section -->
-  <div class="mt-10 bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">تصاویر</h2>
-    <div id="post-images" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <!-- Dynamic images will be populated here -->
+        <div class="mt-6">
+          <h2 class="text-lg font-bold text-gray-200 mb-2">توضیحات</h2>
+          <p id="post-description" class="text-sm leading-relaxed">
+            در حال بارگذاری...
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Contact Info Section -->
-  <div id="contact-info" class="hidden mt-10 bg-white shadow-lg rounded-lg w-4/5 max-w-4xl p-6 text-right">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">اطلاعات تماس</h2>
-    <p id="contact-name" class="text-gray-600 mb-2">نام: در حال بارگذاری...</p>
-    <p id="contact-email" class="text-gray-600">ایمیل: در حال بارگذاری...</p>
+  <div id="contact-info" class="hidden w-11/12 max-w-5xl bg-gray-800 rounded-lg shadow-lg mt-6 p-6 text-right">
+    <h2 class="text-xl font-bold text-gray-200 mb-4">اطلاعات تماس</h2>
+    <p id="contact-name" class="text-gray-300 mb-2">نام: در حال بارگذاری...</p>
+    <p id="contact-email" class="text-gray-300">ایمیل: در حال بارگذاری...</p>
   </div>
-
-  <!-- Contact Button -->
-  <button
-    id="contact-button"
-    class="mt-6 bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 focus:ring focus:ring-indigo-300 focus:outline-none"
-  >
-    اطلاعات تماس
-  </button>
 </div>
-
-
-
-
-
 
 {% endblock %}
 
 
 {% block extra_body %}
 
- <script>
-     {#console.log({{ id }})#}
-     const postId = {{ id }}; // Replace dynamically as needed
-const postDetailUrl = `http://localhost:8000/post/api/post_detail/${postId}`;
-const postOwnerUrl = `http://localhost:8000/post/api/post_detail/${postId}/owner`;
 
-// Fetch post details without authentication
-async function fetchPostDetails() {
-  try {
-    const response = await fetch(postDetailUrl, { method: "GET" });
+<script>
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch post details: ${response.status}`);
-    }
+    const csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    const postId = {{ id }};
+    const postDetailUrl = `http://localhost:8000/post/api/post_detail/${postId}`;
+    const postOwnerUrl = `http://localhost:8000/post/api/post_detail/${postId}/owner`;
 
-    const data = await response.json();
 
-    // Populate post details
-    document.getElementById("post-title").textContent = data.title;
-    document.getElementById("post-description").textContent = data.description;
-    document.getElementById("category-title").textContent = data.category.title;
+    async function fetchPostDetails() {
+    try {
+      const response = await fetch(postDetailUrl, { method: "GET" });
 
-    // Populate fields with values
-    if (data.fields && data.fields.length > 0) {
-      const fieldsContainer = document.getElementById("fields-container");
-      const fieldsList = document.getElementById("fields-list");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch post details: ${response.status}`);
+      }
 
-      fieldsContainer.classList.remove("hidden"); // Show container
-      fieldsList.innerHTML = ""; // Clear existing content
+      const data = await response.json();
 
-      data.fields.forEach((field) => {
-        if (field.value) {
-          const fieldDefinition = data.category.fields.find(
-            (categoryField) => categoryField.id === field.field_id
-          );
-          if (fieldDefinition) {
-            const li = document.createElement("li");
-            li.textContent = `${fieldDefinition.name}: ${field.value}`;
-            fieldsList.appendChild(li);
+      document.getElementById("post-title").textContent = data.title;
+      document.getElementById("post-description").textContent = data.description;
+      document.getElementById("category-title").textContent = data.category.title;
+      document.getElementById("created-at-date").textContent = `تاریخ ایجاد: ${new Date(
+        data.created_at
+      ).toLocaleString("fa-IR")}`;
+
+      if (data.fields && data.fields.length > 0) {
+        const fieldsContainer = document.getElementById("fields-container");
+        const fieldsList = document.getElementById("fields-list");
+
+        fieldsContainer.classList.remove("hidden");
+        fieldsList.innerHTML = "";
+
+        data.fields.forEach((field) => {
+          if (field.value) {
+            const fieldDefinition = data.category.fields.find(
+              (categoryField) => categoryField.id === field.field_id
+            );
+            if (fieldDefinition) {
+              const li = document.createElement("li");
+              li.textContent = `${fieldDefinition.name}: ${field.value}`;
+              fieldsList.appendChild(li);
+            }
           }
+        });
+      }
+
+        const imagesContainer = document.getElementById("post-images");
+        const mainImage = document.getElementById("main-post-image");
+        imagesContainer.innerHTML = "";
+
+        let coverImageSrc = null;
+
+
+        const coverImage = data.images.find((image) => image.is_cover);
+
+        if (coverImage) {
+          coverImageSrc = coverImage.image;
+          mainImage.src = coverImage.image;
+          mainImage.alt = coverImage.caption || "تصویر کاور آگهی";
+          mainImage.classList.remove("hidden");
+        } else {
+          mainImage.classList.add("hidden");
         }
-      });
+
+
+        data.images.forEach((image) => {
+          if (coverImage && image.image === coverImage.image) return;
+
+          const imgElement = document.createElement("img");
+          imgElement.src = image.image;
+          imgElement.alt = image.caption || "تصویر آگهی";
+          imgElement.className =
+            "w-full h-auto rounded shadow cursor-pointer transition-transform hover:scale-105";
+          imgElement.addEventListener("click", () => {
+            mainImage.src = image.image;
+            mainImage.alt = image.caption || "تصویر آگهی";
+          });
+          imagesContainer.appendChild(imgElement);
+        });
+
+        mainImage.addEventListener("click", () => {
+          if (coverImageSrc) {
+            mainImage.src = coverImageSrc;
+            mainImage.alt = "تصویر کاور آگهی";
+          }
+        });
+
+    } catch (error) {
+      console.error("Failed to fetch post details:", error);
     }
-
-    // Populate created date
-    document.getElementById("created-at-date").textContent = `تاریخ ایجاد: ${new Date(
-      data.created_at
-    ).toLocaleString("fa-IR")}`;
-
-    // Populate images
-    const imagesContainer = document.getElementById("post-images");
-    imagesContainer.innerHTML = ""; // Clear existing images
-    data.images.forEach((image) => {
-      const imgElement = document.createElement("img");
-      imgElement.src = image.image;
-      imgElement.alt = image.caption || "تصویر آگهی";
-      imgElement.className = "w-full h-auto rounded shadow";
-      imagesContainer.appendChild(imgElement);
-    });
-  } catch (error) {
-    console.error("Failed to fetch post details:", error);
   }
-}
 
-// Fetch post owner's info only on button click (uses fetchWithAuth)
-async function fetchPostOwner() {
-  try {
-    const data = await fetchWithAuth(postOwnerUrl, { method: "GET" });
 
-    // Populate contact information
-    document.getElementById("contact-name").textContent = `نام: ${
-      data.user.first_name || "نامشخص"
-    } ${data.user.last_name || ""}`;
-    document.getElementById("contact-email").textContent = `ایمیل: ${
-      data.user.email || "نامشخص"
-    }`;
+  async function fetchPostOwner() {
+    try {
+      const response = await fetchWithAuth(postOwnerUrl, { method: "GET" });
+      if (!response.ok) {
 
-    // Show the contact info section
-    document.getElementById("contact-info").classList.remove("hidden");
-  } catch (error) {
-    console.error("Failed to fetch post owner info:", error);
+      }
+
+      const data = response;
+
+      document.getElementById("contact-name").textContent = `نام: ${
+        data.user.first_name || "نامشخص"
+      } ${data.user.last_name || ""}`;
+      document.getElementById("contact-email").textContent = `ایمیل: ${
+        data.user.email || "نامشخص"
+      }`;
+
+      document.getElementById("contact-info").classList.remove("hidden");
+    } catch (error) {
+      console.error("Failed to fetch post owner info:", error);
+    }
   }
-}
 
-// Event listener for the contact button
-document.getElementById("contact-button").addEventListener("click", () => {
-  // Fetch contact info only when the user clicks the button
-  fetchPostOwner();
-});
+  document.getElementById("contact-button").addEventListener("click", () => {
+    fetchPostOwner();
+  });
 
-// Fetch post details on page load
-fetchPostDetails();
+  fetchPostDetails();
 
-
-
-
- </script>
+</script>
 
 {% endblock %}

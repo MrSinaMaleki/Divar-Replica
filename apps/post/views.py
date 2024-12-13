@@ -228,7 +228,7 @@ class PostOwnerDetails(RetrieveAPIView):
                 }
 
     """
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
     queryset = Post.objects.all()
     serializer_class = PostOwnerDetailSerializer
 
