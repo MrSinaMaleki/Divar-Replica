@@ -5,7 +5,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from apps.core.managers import LogicalMixin
+from apps.core.models import LogicalMixin
 from datetime import date
 
 

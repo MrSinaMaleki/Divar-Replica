@@ -13,7 +13,7 @@ class Bookmark(LogicalMixin):
     objects = ActiveNotDeletedBaseManager()
 
     def __str__(self):
-        return f"{self.user} -> {self.products}"
+        return f"{self.user} -> {self.posts}"
 
     # class Meta:
     #     constraints = [
