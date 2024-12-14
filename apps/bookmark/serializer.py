@@ -12,11 +12,11 @@ class FavoriteAddSerializer(serializers.ModelSerializer):
         # print("user => ",self.context['request'].user)
         user = User.objects.get(id=self.context['request'].user.id)
         try:
-            favorite = Bookmark.objects.get(products_id=validated_data['products'].id, user=user)
+            favorite = Bookmark.objects.get(posts_id=validated_data['posts'].id, user=user)
             favorite.is_active = False
             favorite.is_delete = True
             favorite.save()
         except Bookmark.DoesNotExist:
-            Bookmark.objects.create(user=user, products_id=validated_data['products'].id)
+            Bookmark.objects.create(user=user, posts_id=validated_data['posts'].id)
         return validated_data
 

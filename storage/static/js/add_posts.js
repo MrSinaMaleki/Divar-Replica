@@ -177,7 +177,8 @@ function fetchProvinces() {
     .then(response => response.json())
     .then(data => {
       const provinces = data.filter(location => location.type === 1);  // Assuming type 1 is for provinces
-      const provinceSelect = document.getElementById("province");
+      const provinceSelect = document.getElementById("provinces");
+        console.log("province inp: ", provinceSelect)
 
       provinces.forEach(province => {
         const option = document.createElement("option");
@@ -236,7 +237,7 @@ function fetchCities(provinceId) {
 
 // Proceed to post form after selecting location
 async function proceedToPostForm() {
-  const provinceId = document.getElementById("province").value;
+  const provinceId = document.getElementById("provinces").value;
   const areaId = document.getElementById("area").value;
   const subSubCategoryId = document.getElementById("sub-subcategory").value; // Get selected sub-sub-category ID
 

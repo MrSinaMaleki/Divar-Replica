@@ -25,43 +25,87 @@
 {% block extra_body %}
 
  <script>
-        async function fetchPosts() {
-      try {
-        const response = await fetch('http://localhost:8000/post/api/all_posts');
-        const data = await response.json();
+async function fetchPosts() {
+  try {
+    const response = await fetch('http://localhost:8000/post/api/all_posts');
+    const data = await response.json();
 
-        const postsContainer = document.getElementById('posts');
+    const postsContainer = document.getElementById('posts');
+    postsContainer.innerHTML = ''; // Clear existing posts
 
-        data.forEach(post => {
-          const coverImage = post.images.find(img => img.is_cover)?.image || 'https://via.placeholder.com/150';
-          const ladderedClass = post.laddered
-            ? 'bg-red-200 border-red-500 relative'
-            : 'bg-white border';
-          const ladderedBadge = post.laddered
-            ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">پله شده</span>`
-            : '';
+    data.forEach(post => {
+      const coverImage = post.images.find(img => img.is_cover)?.image || 'https://via.placeholder.com/150';
+      const ladderedClass = post.laddered
+        ? 'bg-red-200 border-red-500 relative'
+        : 'bg-white border';
+      const ladderedBadge = post.laddered
+        ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">پله شده</span>`
+        : '';
 
-          // Convert to Persian date
-          const persianDate = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(post.created_at));
+      // Convert to Persian date
+      const persianDate = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(post.created_at));
 
-          const postHTML = `
-            <div onclick="showpostinfo(${post.id})" class="cursor-pointer shadow-lg rounded-lg overflow-hidden border ${ladderedClass}">
-              ${ladderedBadge}
-              <img src="${coverImage}" alt="${post.title}" class="w-full h-48 object-cover">
-              <div class="p-4">
-                <h2 class="text-lg font-bold">${post.title}</h2>
-                <p class="text-gray-600 text-sm">${post.description}</p>
-                <p class="text-gray-400 text-xs mt-2">تاریخ: ${persianDate}</p>
-              </div>
-            </div>
-          `;
-          postsContainer.innerHTML += postHTML;
-        });
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-        document.getElementById('posts').innerHTML = `<p class="text-red-500">مشکلی در بارگذاری پست‌ها وجود دارد</p>`;
+      // Add favorite button
+      const postHTML = `
+        <div onclick="showpostinfo(${post.id})" class="cursor-pointer shadow-lg rounded-lg overflow-hidden border ${ladderedClass}">
+          ${ladderedBadge}
+          <img src="${coverImage}" alt="${post.title}" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h2 class="text-lg font-bold">${post.title}</h2>
+            <p class="text-gray-600 text-sm">${post.description}</p>
+            <p class="text-gray-400 text-xs mt-2">تاریخ: ${persianDate}</p>
+            <button
+              onclick="toggleFavorite(event, ${post.id})"
+              class="favorite-btn mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              id="addfavoritebtn">
+              اضافه به علاقه‌مندی‌ها
+            </button>
+          </div>
+        </div>
+      `;
+      postsContainer.innerHTML += postHTML;
+    });
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    document.getElementById('posts').innerHTML = `<p class="text-red-500">مشکلی در بارگذاری پست‌ها وجود دارد</p>`;
+  }
+}
+
+// Function to toggle favorite
+async function toggleFavorite(event, postId) {
+  event.stopPropagation(); // Prevent triggering post click
+  const button = event.target;
+
+  try {
+    const response = await fetchWithAuth('http://localhost:8000/bookmarks/bookmarks/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ posts: postId }),
+    });
+
+
+      const result = await response
+
+      const likebtn = document.getElementById('addfavoritebtn')
+      console.log("likebtn: ", likebtn)
+      // Toggle button text based on action
+      if (result.added) {
+        button.textContent = 'حذف از علاقه‌مندی‌ها';
+        button.classList.replace('bg-blue-500', 'bg-red-500');
+        button.classList.replace('hover:bg-blue-600', 'hover:bg-red-600');
+      } else {
+          button.textContent = 'اضافه به علاقه‌مندی‌ها';
+          button.classList.replace('bg-red-500', 'bg-blue-500');
+          button.classList.replace('hover:bg-red-600', 'hover:bg-blue-600');
       }
-    }
+
+  } catch (error) {
+    console.error('Error toggling favorite:', error);
+  }
+}
+
 
     // Empty function for onClick
     function showpostinfo(postId) {
