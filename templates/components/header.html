@@ -1,4 +1,4 @@
-<header class="shadow py-4">
+<header class="shadow py-4 font-iransans_Medium">
       <div class="flex w-full justify-center h-10">
         <div class="flex items-center h-full gap-x-4">
           <a href="#" class="h-full">
@@ -9,7 +9,9 @@
             />
           </a>
           <div class="h-6 w-[1px] bg-gray-300"></div>
+          <!-- locations -->
           <div
+            id="open-location-card"
             class="flex items-center gap-x-1 h-full rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
           >
             <span>
@@ -19,6 +21,85 @@
             </span>
             <span class="text-sm">تهران</span>
           </div>
+          <!-- choosing location -->
+          <div
+            class="hidden absolute right-0 bottom-0 w-full h-screen bg-black/30 flex justify-center items-center"
+          >
+            <div
+              id="location-card"
+              class="w-[30.5rem] bg-white rounded m-3 sm:m-0"
+            >
+              <header class="shadow p-8 pb-4">
+                <div class="flex justify-between items-end">
+                  <span class="text-lg">انتخاب شهر</span>
+                  <span
+                    id="remove-all-cities"
+                    class="text-xs font-iransans text-dark_redwall rounded-full py-1 px-3 cursor-pointer hover:bg-red-100/40 transition-all"
+                    >حذف همه</span
+                  >
+                </div>
+                <div
+                  class="inline-flex bg-red-50/50 border border-light_redwall rounded-full my-3"
+                >
+                  <div
+                    class="flex items-center gap-x-2 font-iransans text-sm text-dark_redwall px-3 py-1"
+                  >
+                    <span>تهران</span>
+                    <span id="remove-city">
+                      <svg class="w-3 h-3 cursor-pointer">
+                        <use href="#x-mark"></use>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+                <!-- sentence of choosing location -->
+                <div
+                  id="choosing-location-sentence"
+                  class="hidden text-zinc-400 text-sm my-4 font-iransans"
+                >
+                  حداقل یک شهر را انتخاب کنید.
+                </div>
+                <div class="relative flex items-center rounded py-2 w-[436px]">
+                  <span class="absolute right-2.5">
+                    <svg class="w-4 h-4 text-zinc-400">
+                      <use href="#search"></use>
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    class="h-full w-full font-iransans text-sm rounded py-2 px-9 border border-zinc-300 hover:border-zinc-500 focus:outline-red-700/60 focus:ring-offset-2 transition-all duration-300"
+                    placeholder="جستجو در شهرها"
+                    name=""
+                    id=""
+                  />
+                </div>
+              </header>
+              <main id="province-container" class="py-3 px-8 overflow-y-auto">
+                <!-- provinces & cities list -->
+                <ul id="province" class="divide-y-2 font-iransans"></ul>
+              </main>
+              <footer
+                class="px-4 py-4 flex justify-center gap-x-4 shadow-normal"
+              >
+                <button
+                  id="cancel"
+                  type="button"
+                  class="bg-white text-zinc-500 w-full h-10 leading-10 rounded px-4 cursor-pointer border border-zinc-500 hover:bg-zinc-100 hover:text-black transition-all duration-300"
+                >
+                  انصراف
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  class="disabled:bg-zinc-100 disabled:text-zinc-400 disabled:border-slate-200 disabled:shadow-none w-full h-10 leading-10 rounded px-4 cursor-not-allowed hover: transition-all"
+                >
+                  تأیید
+                </button>
+              </footer>
+            </div>
+          </div>
+
+          <!-- categories -->
           <div
             class="flex items-center text-sm gap-x-2 h-full rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
           >
@@ -31,33 +112,222 @@
           </div>
         </div>
         <div class="flex items-center mr-4">
+          <!-- search box -->
           <div
-            class="flex items-center justify-between px-2 bg-zinc-300 w-[436px] h-full rounded"
+            class="flex items-center px-2 bg-zinc-200 w-[436px] h-full relative rounded shadow"
           >
-            <input
-              type="text"
-              class="bg-zinc-300 h-full font-iransans text-sm px-1 outline-none"
-              placeholder="جستجو در همه آگهی ها"
-              name=""
-              id=""
-            />
-            <span>
-              <svg class="w-4 h-4 text-zinc-600">
-                <use href="#search"></use>
-              </svg>
-            </span>
+            <div id="search-box" class="flex items-center w-full">
+              <input
+                type="text"
+                class="bg-zinc-200 w-full h-full font-iransans text-sm px-1 outline-none"
+                placeholder="جستجو در همه آگهی ها"
+                name=""
+                id=""
+              />
+              <span>
+                <svg class="w-4 h-4 text-zinc-500">
+                  <use href="#search"></use>
+                </svg>
+              </span>
+              <div
+                class="hidden absolute top-10 right-0 overflow-hidden group w-full h-max text-zinc-500 font-iransans bg-white shadow rounded-b"
+              >
+                <p class="text-center text-base mt-5 mb-9">
+                  موردی برای نمایش وجود ندارد
+                </p>
+                <div class="px-4 pb-4">
+                  <p class="my-4 text-sm">بیشترین جستجوهای دیوار</p>
+                  <div class="flex flex-wrap gap-2">
+                    <a href="#" class="most-search">
+                      <span>خودروی سواری</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>فروش آپارتمان</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>اجاره آپارتمان</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>موبایل</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>صندلی و نیمکت</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>حیوانات</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>وسایل شخصی</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>خدمات</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>استخدام</span>
+                    </a>
+                    <a href="#" class="most-search">
+                      <span>تلویزیون</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="mr-[11rem]">
             <ul class="flex items-center h-full gap-x-4">
+              <!-- my divar -->
               <li
-                class="flex items-center leading-10 text-xs gap-x-2 rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
+                id="my-divar-state"
+                class="relative leading-10 text-xs text-zinc-500 cursor-pointer"
               >
-                <span>
-                  <svg class="w-5 h-5">
-                    <use href="#user"></use>
-                  </svg>
-                </span>
-                <span>دیوار من</span>
+                <div
+                  class="flex items-center gap-x-2 rounded px-4 hover:bg-zinc-100 hover:text-black transition-all"
+                >
+                  <span>
+                    <svg class="w-5 h-5">
+                      <use href="#user"></use>
+                    </svg>
+                  </span>
+                  <span>دیوار من</span>
+                </div>
+                <div
+                  class="hidden absolute divide-y bg-white w-56 top-11 font-iransans shadow rounded"
+                >
+                  <a
+                    class="flex items-center flex-wrap gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span>
+                      <svg class="w-4 h-4">
+                        <use href="#user"></use>
+                      </svg>
+                    </span>
+                    <p>کاربر دیوار</p>
+                    <p class="basis-full pr-6 text-black/30 mt-[-15px]">
+                      <span class="ml-0.5">تلفن</span>
+                      <span>09127456895</span>
+                    </p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      verified_user
+                    </span>
+                    <p>تأیید هویت</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> history_edu </span>
+                    <p>آگهی‌های من</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> credit_card </span>
+                    <p>پرداخت‌های من</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> bookmark </span>
+                    <p>نشان‌ها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      sticky_note_2
+                    </span>
+                    <p>یادداشت‌ها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> history </span>
+                    <p>بازدیدهای اخیر</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      verified_user
+                    </span>
+                    <p>مقابله با مزاحمت و کلاهبرداری</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> store </span>
+                    <p>دیوار برای کسب‌وکارها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> format_paint </span>
+                    <p>تنظیمات ظاهر دیوار</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> logout </span>
+                    <p>خروج</p>
+                  </a>
+                </div>
+                <div
+                  class="hidden absolute divide-y bg-white w-56 top-11 font-iransans shadow rounded"
+                >
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span>
+                      <svg class="w-4 h-4">
+                        <use href="#user"></use>
+                      </svg>
+                    </span>
+                    <p>کاربر دیوار</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> bookmark </span>
+                    <p>نشان‌ها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      sticky_note_2
+                    </span>
+                    <p>یادداشت‌ها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> history </span>
+                    <p>بازدیدهای اخیر</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      verified_user
+                    </span>
+                    <p>مقابله با مزاحمت و کلاهبرداری</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> store </span>
+                    <p>دیوار برای کسب‌وکارها</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> format_paint </span>
+                    <p>تنظیمات ظاهر دیوار</p>
+                  </a>
+                </div>
               </li>
               <li
                 class="flex items-center leading-10 text-xs gap-x-2 rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
@@ -69,15 +339,39 @@
                 </span>
                 <span>چت</span>
               </li>
+              <!-- support -->
               <li
-                class="flex items-center leading-10 text-xs gap-x-2 rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"
+                id="support-state"
+                class="relative leading-10 text-xs text-zinc-500 cursor-pointer"
               >
-                <span>
-                  <svg class="w-5 h-5 rotate-45">
-                    <use href="#support"></use>
-                  </svg>
-                </span>
-                <span>پشتیبانی</span>
+                <div
+                  class="flex items-center gap-x-2 rounded px-4 hover:bg-zinc-100 hover:text-black transition-all"
+                >
+                  <span>
+                    <svg class="w-5 h-5 rotate-45">
+                      <use href="#support"></use>
+                    </svg>
+                  </span>
+                  <span>پشتیبانی</span>
+                </div>
+                <div
+                  class="hidden absolute divide-y bg-white w-36 top-11 font-iransans shadow rounded"
+                >
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base">
+                      support_agent
+                    </span>
+                    <p>پشتیبانی و قوانین</p>
+                  </a>
+                  <a
+                    class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                  >
+                    <span class="material-icons text-base"> feedback </span>
+                    <p>پیگیری درخواست</p>
+                  </a>
+                </div>
               </li>
               <li
                 class="flex items-center leading-10 text-xs gap-x-2 rounded text-zinc-500 px-4 cursor-pointer hover:bg-zinc-100 hover:text-black transition-all"

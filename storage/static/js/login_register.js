@@ -12,11 +12,10 @@ let requestBtn = document.querySelector(".request-btn");
 let changeAddr = document.querySelector(".change-addr");
 let codeInp = document.querySelector("#codeInp");
 let enterbtn = document.querySelector("#enterbtn")
-let set;
 const fullForm = document.getElementById('fullform')
 if (is_loggedIn === 'True'){
   console.log(is_loggedIn)
-  fullForm.style.display = 'none'
+  // fullForm.style.display = 'none'
 }
 
 

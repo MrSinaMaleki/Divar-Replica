@@ -2,10 +2,8 @@
 <div id="fullform" >
 
 
-  <!-- login form -->
-
-  <section
-    class="login-section w-full h-screen bg-black/30 flex justify-center items-center"
+ <section
+    class="absolute login-section w-full h-screen bg-black/30 flex justify-center items-center z-50"
   >
     <div
       class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] bg-white rounded m-3 sm:m-0"
@@ -62,7 +60,7 @@
   </section>
   <!-- verify form -->
   <section
-    class="verify-section w-full h-screen bg-black/30 hidden justify-center items-center"
+    class="absolute verify-section w-full h-screen bg-black/30 hidden justify-center items-center z-50"
   >
     <div
       class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] bg-white rounded m-3 sm:m-0"
@@ -105,8 +103,12 @@
           </div>
         </div>
       </main>
-      <footer class="px-4 py-4 flex justify-end items-center gap-x-4 shadow-normal">
-        <div class="flex justify-between items-center px-4 gap-x-6 ml-2 text-black/30 text-base font-iransans_Medium">
+      <footer
+        class="px-4 py-4 flex justify-end items-center gap-x-4 shadow-normal"
+      >
+        <div
+          class="flex justify-between items-center px-4 gap-x-6 ml-2 text-black/30 text-base font-iransans_Medium"
+        >
           <span>درخواست مجدد</span>
           <span class="timer w-5 text-center"></span>
         </div>
@@ -117,7 +119,7 @@
           درخواست کد
         </button>
         <button
-                id="enterbtn"
+          id="enterbtn"
           type="submit"
           class="accept inline-flex justify-center bg-dark_redwall text-white min-w-24 h-10 leading-10 rounded px-4 cursor-pointer hover:bg-light_redwall transition-all"
         >
