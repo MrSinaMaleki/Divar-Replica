@@ -54,12 +54,6 @@ async function fetchPosts() {
             <h2 class="text-lg font-bold">${post.title}</h2>
             <p class="text-gray-600 text-sm">${post.description}</p>
             <p class="text-gray-400 text-xs mt-2">تاریخ: ${persianDate}</p>
-            <button
-              onclick="toggleFavorite(event, ${post.id})"
-              class="favorite-btn mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              id="addfavoritebtn">
-              اضافه به علاقه‌مندی‌ها
-            </button>
           </div>
         </div>
       `;
@@ -68,41 +62,6 @@ async function fetchPosts() {
   } catch (error) {
     console.error('Error fetching posts:', error);
     document.getElementById('posts').innerHTML = `<p class="text-red-500">مشکلی در بارگذاری پست‌ها وجود دارد</p>`;
-  }
-}
-
-// Function to toggle favorite
-async function toggleFavorite(event, postId) {
-  event.stopPropagation(); // Prevent triggering post click
-  const button = event.target;
-
-  try {
-    const response = await fetchWithAuth('http://localhost:8000/bookmarks/bookmarks/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ posts: postId }),
-    });
-
-
-      const result = await response
-
-      const likebtn = document.getElementById('addfavoritebtn')
-      console.log("likebtn: ", likebtn)
-      // Toggle button text based on action
-      if (result.added) {
-        button.textContent = 'حذف از علاقه‌مندی‌ها';
-        button.classList.replace('bg-blue-500', 'bg-red-500');
-        button.classList.replace('hover:bg-blue-600', 'hover:bg-red-600');
-      } else {
-          button.textContent = 'اضافه به علاقه‌مندی‌ها';
-          button.classList.replace('bg-red-500', 'bg-blue-500');
-          button.classList.replace('hover:bg-red-600', 'hover:bg-blue-600');
-      }
-
-  } catch (error) {
-    console.error('Error toggling favorite:', error);
   }
 }
 

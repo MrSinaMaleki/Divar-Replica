@@ -8,4 +8,9 @@ from apps.bookmark.models import Bookmark
 
 class FavoriteAddView(ListCreateAPIView):
     serializer_class = FavoriteAddSerializer
-    queryset = Bookmark.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        post = self.request.query_params.get('post', None)
+        exist= Bookmark.objects.filter(user_id=user.id, posts=post, is_active=True).exists()
+        return Response({'exists: ': exist})

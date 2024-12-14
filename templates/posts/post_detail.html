@@ -20,13 +20,40 @@
       <div class="w-full lg:w-2/3 p-4">
         <img id="main-post-image" src="https://via.placeholder.com/600x400" alt="Post Image" class="rounded-lg mb-4 hidden">
         <div id="post-images" class="grid grid-cols-3 gap-2">
+
           <!-- Images populated dynamically -->
         </div>
       </div>
 
       <!-- Details Section -->
       <div class="w-full lg:w-1/3 bg-gray-700 p-6 text-right">
-        <h1 id="post-title" class="text-2xl font-bold mb-4">عنوان آگهی</h1>
+          <div class="flex flex-row">
+
+            <h1 id="post-title" class="text-2xl font-bold mb-4">عنوان آگهی</h1>
+            <div class="flex items-center justify-center w-8 max-h-8 z-50 mr-4">
+             <!-- Heart Button -->
+             <button
+               id="heartButton"
+               class="p-3 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-300"
+             >
+               <!-- SVG Icon -->
+               <svg
+                 id="heartIcon"
+                 xmlns="http://www.w3.org/2000/svg"
+                 class="w-8 h-8 text-gray-400 transition-colors duration-300"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+               >
+                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path>
+               </svg>
+             </button>
+          </div>
+          </div>
+
         <ul class="text-gray-300 mb-6">
           <li id="category-title" class="mb-2 font-semibold">دسته‌بندی: در حال بارگذاری...</li>
           <li id="created-at-date" class="mb-2">تاریخ ایجاد: در حال بارگذاری...</li>
@@ -188,6 +215,65 @@
 
   fetchPostDetails();
 
+   const heartButton = document.getElementById("heartButton");
+  const heartIcon = document.getElementById("heartIcon");
+  let isLiked = false;
+
+  heartButton.addEventListener("click", () => {
+
+      toggleFavorite(postId)
+
+    isLiked = !isLiked;
+
+    if (isLiked) {
+      // Toggle to liked (filled heart)
+      heartIcon.setAttribute("fill", "currentColor");
+      heartIcon.classList.replace("text-gray-400", "text-pink-500");
+    } else {
+      // Toggle to unliked (hollow heart)
+      heartIcon.setAttribute("fill", "none");
+      heartIcon.classList.replace("text-pink-500", "text-gray-400");
+    }
+  });
+
+      async function toggleFavorite(button) {
+
+        try {
+          const response = await fetchWithAuth('http://localhost:8000/bookmarks/bookmarks/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ posts: postId }),
+          });
+
+            const result = await response
+            console.error('Failed to toggle favorite:', await response);
+
+        } catch (error) {
+          console.error('Error toggling favorite:', error);
+        }
+      }
+
+      async function CheckFavorite() {
+
+        try {
+          const response = await fetchWithAuth(`http://localhost:8000/bookmarks/bookmarks?post=${postId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+            const result = await response
+            console.error('favorites:', await response);
+
+        } catch (error) {
+          console.error('Error toggling favorite:', error);
+        }
+      }
+
+      CheckFavorite()
 </script>
 
 {% endblock %}
