@@ -12,7 +12,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 
-
 class FieldAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
         if request.user.role == 'god':

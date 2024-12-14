@@ -102,6 +102,7 @@
     const postOwnerUrl = `http://localhost:8000/post/api/post_detail/${postId}/owner`;
 
 
+
     async function fetchPostDetails() {
     try {
       const response = await fetch(postDetailUrl, { method: "GET" });
@@ -217,7 +218,7 @@
 
    const heartButton = document.getElementById("heartButton");
   const heartIcon = document.getElementById("heartIcon");
-  let isLiked = false;
+    let isLiked = false
 
   heartButton.addEventListener("click", () => {
 
@@ -266,14 +267,26 @@
           });
 
             const result = await response
-            console.error('favorites:', await response);
+            console.log(result.exists)
+            if (result.exists == false){
+                console.log("No likes")
+
+
+
+
+            }else{
+                console.log("liked it")
+                                isLiked = !isLiked;
+                heartIcon.setAttribute("fill", "currentColor");
+                heartIcon.classList.replace("text-gray-400", "text-pink-500")
+            }
 
         } catch (error) {
           console.error('Error toggling favorite:', error);
         }
       }
+        CheckFavorite()
 
-      CheckFavorite()
 </script>
 
 {% endblock %}
