@@ -195,8 +195,8 @@ class VerifyCheck(APIView):
 
 
 
-
-class Profile(APIView):
-
-    def get(self, request, *args, **kwargs):
-        return Response({"Pofile": "Bla bla bla ...!"})
+from rest_framework.generics import RetrieveUpdateAPIView
+from apps.account.serializers import UserSerializer
+class Profile(RetrieveUpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
