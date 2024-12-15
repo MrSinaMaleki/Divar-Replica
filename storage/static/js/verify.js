@@ -1,4 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const verify_box = document.getElementById('verify-box')
+
+
+  async function verify_status(){
+      const response = await fetchWithAuth(`http://localhost:8000/account/api/profile/verifycheck/`);
+      const data = await response;
+      // console.log('veerified: ',data.is_verified)
+      if (data.is_verified){
+        const verificationDate = new Date(data.is_verified_date).toLocaleDateString("fa-IR");
+          verify_box.innerHTML = `
+            <div class="max-w-lg mx-auto mt-12 p-6 bg-gray-800 rounded-lg shadow-lg">
+              <p class="text-lg text-green-400 font-semibold mb-4">حساب کاربری شما تأیید شده است.</p>
+              <p class="text-sm text-gray-400">تاریخ تأیید: ${verificationDate}</p>
+            </div>
+          `;
+      }
+  }
+
+
+
+
+
+
+
   const submitButton = document.getElementById("submit-verification-form");
 
   submitButton.addEventListener("click", async function (event) {
@@ -40,5 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error:", error);
     }
   });
+
+    verify_status()
 });
 

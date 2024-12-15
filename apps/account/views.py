@@ -149,6 +149,18 @@ def logout_view(request):
 class VerifyCheck(APIView):
     serializer_class = UserVerifySerializer
 
+    def get(self, request, *args, **kwargs):
+        try:
+            user = User.objects.get(id=request.user.id)
+            return Response({
+                "is_verified": user.is_verified,
+                "is_verified_date": user.is_verified_date
+            }, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({'Message': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
