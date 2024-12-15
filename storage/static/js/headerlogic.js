@@ -69,11 +69,13 @@
         supportBtn.lastElementChild.classList.toggle("hidden");
       });
       myDivarBtn.addEventListener("click", () => {
-        if (flag) {
+          // console.log(is_loggedIn)
+        if (is_loggedIn === "True") {
           myDivarBtn.firstElementChild.nextElementSibling.classList.toggle(
             "hidden"
           );
         } else {
+
           myDivarBtn.lastElementChild.classList.toggle("hidden");
         }
       });
@@ -157,3 +159,24 @@
         // شروع با لیست استان‌ها
         renderProvinces();
       }
+
+
+const logOutBtn = document.getElementById('logOutBtn')
+      logOutBtn.addEventListener('click', event=> {
+
+        location.reload()
+
+
+      })
+
+
+
+
+
+
+
+
+
+
+
+

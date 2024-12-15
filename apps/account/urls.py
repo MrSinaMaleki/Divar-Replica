@@ -7,6 +7,7 @@ urlpatterns = [
     path('loginAPI/', views.SignRegister.as_view(), name='login'),
     path('login/', TemplateView.as_view(template_name='account/login.html'), name='login'),
 
+    path('logout/', views.logout_view, name='logout'),
     path('verifyAPI/', views.Verify.as_view(), name='verify'),
 
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

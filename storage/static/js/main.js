@@ -98,6 +98,3 @@ function getCookie(name) {
     return null;
 }
 
-function redirectToSignup() {
-    fullForm.style.display = 'block'
-}

@@ -12,7 +12,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model, login
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-# Create your views here.
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect
 
 class SignRegister(APIView):
     """
@@ -137,6 +138,11 @@ class Verify(APIView):
 
 
 from rest_framework.permissions import IsAuthenticated
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
 
 class Profile(APIView):
 

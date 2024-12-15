@@ -190,6 +190,20 @@
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/login_register.js' %}"></script>
 <script src="{% static 'js/headerlogic.js' %}"></script>
+     <script>
+         console.log(is_loggedIn)
+         if (is_loggedIn === 'False'){
+            redirectToSignup()
+         }else{
+            loginSection.style.background = "none";
+            loginSection.style.display = "none";
+         }
+
+         function redirectToSignup() {
+                loginSection.style.background = "flex";
+                loginSection.style.display = "flex";
+            }
+     </script>
 {% block extra_body %} {% endblock %}
 
 

@@ -52,6 +52,7 @@ changeAddr.addEventListener("click", () => {
 enterbtn.addEventListener("click", ()=>{
   verifyCode(emailInput.value, codeInp.value)
   verifycloseFrm()
+  // location.reload()
 
 })
 
@@ -152,6 +153,7 @@ async function verifyCode(email, code) {
     }
 
     return { success: true, data: responseData };
+
   } catch (error) {
     console.error("Error while verifying code:", error);
     return { success: false, message: "An error occurred while verifying the code" };
