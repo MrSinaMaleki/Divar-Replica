@@ -1,4 +1,4 @@
-from apps.account.serializers import UserLoginSerializer
+from apps.account.serializers import UserLoginSerializer, UserVerifySerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from random import randint
@@ -14,6 +14,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
+from apps.account.models import User
+from rest_framework import status
+from django.utils.timezone import now
 
 class SignRegister(APIView):
     """
@@ -137,11 +140,48 @@ class Verify(APIView):
 #             raise AuthenticationFailed('Invalid or expired refresh token')
 
 
-from rest_framework.permissions import IsAuthenticated
 
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+class VerifyCheck(APIView):
+    serializer_class = UserVerifySerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            # print('request.data: ',request.data)
+            # print('request.user: ',request.user.id)
+
+            user_id = request.user.id
+            nationality = serializer.validated_data['nationality']
+            id_number = serializer.validated_data['id_number']
+
+            try:
+                user = User.objects.get(id=user_id)
+
+                if nationality not in dict(User.Nationalities.choices):
+                    return Response({"error": "Invalid nationality."}, status=status.HTTP_400_BAD_REQUEST)
+
+                if len(id_number) != 11 or not id_number.isdigit():
+                    return Response({"error": "ID number must be 11 digits."}, status=status.HTTP_400_BAD_REQUEST)
+
+                user.nationality = nationality
+                user.id_number = id_number
+                user.waiting_verified = True
+                # user.is_verified_date = now()
+                user.save()
+
+                return Response({"message": "User verification successful."}, status=status.HTTP_200_OK)
+
+            except User.DoesNotExist:
+                return Response({"error": "User with this email does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class Profile(APIView):

@@ -3,10 +3,10 @@
 
 
  <section
-    class="absolute login-section w-full h-screen bg-black/30 flex justify-center items-center z-50"
+    class="absolute login-section w-full h-screen bg-black/50 flex justify-center items-center z-50"
   >
     <div
-      class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] bg-white rounded m-3 sm:m-0"
+      class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] rounded m-3 sm:m-0 bg-gray-900 text-white"
     >
       <header class="py-2 px-6 shadow">
         <div class="flex items-center justify-between min-h-14">
@@ -20,7 +20,9 @@
               <use href="#x-mark"></use>
             </svg>
           </span>
+
         </div>
+                  <hr>
       </header>
       <main class="formcontainer-login py-8 px-6 overflow-y-auto">
         <div class="flex flex-col gap-y-8">
@@ -33,7 +35,7 @@
           </p>
           <div>
             <input
-              class="mail w-full text-base border rounded px-3 py-2 focus:outline-red-600 transition-all duration-300 mb-2"
+              class="mail w-full text-base border rounded px-3 py-2 outline-red-600 focus:outline-red-600 transition-all duration-300 mb-2 bg-gray-900 text-white"
               type="email"
               placeholder="example@email.com"
               dir="ltr"
@@ -48,6 +50,7 @@
           </div>
         </div>
       </main>
+        <hr>
       <footer class="px-4 py-4 flex justify-end shadow-normal">
         <button
           type="submit"
@@ -63,7 +66,7 @@
     class="absolute verify-section w-full h-screen bg-black/30 hidden justify-center items-center z-50"
   >
     <div
-      class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] bg-white rounded m-3 sm:m-0"
+      class="w-[30.5rem] max-h-[41rem] min-h-[14.5rem] bg-gray-900 text-white rounded m-3 sm:m-0"
     >
       <header class="py-2 px-6 shadow">
         <div class="flex items-center justify-between min-h-14">
@@ -86,16 +89,17 @@
           </p>
           <div>
             <input
-              class="mail w-full text-base border rounded px-3 py-2 focus:outline-red-600 transition-all duration-300 mb-2"
+              class="mail w-full text-base border rounded px-3 py-2 focus:outline-red-600 transition-all duration-300 mb-2 bg-gray-900 text-white"
               type="text"
               maxlength="6"
               placeholder=""
               id="codeInp"
+
             />
             <p class="responseMail text-red-600 text-xs mr-2 mt-1"></p>
             <div class="flex justify-end">
               <div
-                class="change-addr inline-block px-3 py-1.5 cursor-pointer bg-black/5 text-black/55 rounded-2xl text-xs hover:bg-black/35 transition-all"
+                class="change-addr inline-block px-3 py-1.5 cursor-pointer bg-black/5 text-white rounded-2xl text-xs hover:bg-black/35 transition-all"
               >
                 تغییر آدرس ایمیل
               </div>
@@ -107,7 +111,7 @@
         class="px-4 py-4 flex justify-end items-center gap-x-4 shadow-normal"
       >
         <div
-          class="flex justify-between items-center px-4 gap-x-6 ml-2 text-black/30 text-base font-iransans_Medium"
+          class="flex justify-between items-center px-4 gap-x-6 ml-2 text-white text-base font-iransans_Medium"
         >
           <span>درخواست مجدد</span>
           <span class="timer w-5 text-center"></span>

@@ -13,4 +13,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('profile/', views.Profile.as_view(), name='profile'),
+    path('profile/verifycheck/', TemplateView.as_view(template_name='profile/verify.html'), name='profile'),
+    path('api/profile/verifycheck/', views.VerifyCheck.as_view(), name='profile/verify'),
 ]

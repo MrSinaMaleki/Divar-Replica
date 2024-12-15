@@ -71,9 +71,10 @@ class User(AbstractUser, LogicalMixin):
     password = None
 
     id_number = models.CharField(max_length=11)
-    id_pic = models.ImageField(upload_to="images/", null=True, blank=True,
-                                      validators=[validate_image_size])
+    # id_pic = models.ImageField(upload_to="images/", null=True, blank=True,
+    #                                   validators=[validate_image_size])
     nationality = models.CharField(max_length=100, choices=Nationalities.choices, null=True, blank=True)
+    waiting_verified = models.BooleanField(default=False)
 
     # Documents were accepted by admin
     is_verified = models.BooleanField(default=False)
