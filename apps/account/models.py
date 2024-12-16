@@ -65,8 +65,8 @@ class User(AbstractUser, LogicalMixin):
     email = models.EmailField(unique=True, help_text="User email(Used for auth)")
     phone = models.CharField(max_length=11, help_text="max number = 11 char",null=True, blank=True)
 
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
     username = None
     password = None
 

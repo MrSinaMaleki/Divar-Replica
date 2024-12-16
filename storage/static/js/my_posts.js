@@ -11,6 +11,7 @@ async function getLikedPosts() {
 
     // Loop through the fetched data and create cards
     data.forEach((item) => {
+      console.log(item.laddered)
 
       // Use the first image if available; otherwise, fallback to a placeholder
       const coverImage = item.images.length > 0 ? item.images[0].image : "https://via.placeholder.com/120";
@@ -70,16 +71,17 @@ async function getLikedPosts() {
                 ویرایش
               </button>
         
+        
               <!-- Ladder Button -->
-              <button 
-                class="flex items-center text-gray-300 hover:text-gray-100 text-sm"
-                onclick="ladderPost(${item.id})"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M9 6h6M9 18h6" />
-                </svg>
-                نردبان
-              </button>
+                     <button 
+                       class="flex items-center text-gray-300 hover:text-gray-100 text-sm ${item.laddered ? 'opacity-50 cursor-not-allowed' : ''}"
+                       onclick="${item.laddered ? 'event.preventDefault()' : `ladderPost(${item.id})`}"
+                       ${item.laddered ? 'disabled' : ''}>
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M9 6h6M9 18h6" />
+                       </svg>
+                       نردبان
+                     </button>
         
               <!-- Delete Button -->
               <button 
@@ -134,6 +136,36 @@ async function deletePost(post_id){
   } catch (error) {
     console.error("Network or server error:", error);
     alert("Failed to delete post. Please try again later.");
+  }
+}
+
+
+async function ladderPost(post_id){
+  const apiUrl = "http://localhost:8000/post/api/post/ladder";
+  try{
+    // Send the request using fetch
+    const response = await fetchWithAuth(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Make sure we're sending JSON data
+      },
+
+      body: JSON.stringify({
+        post_id: post_id
+      })
+    });
+
+
+      const data = await response
+      console.log("Post laddered successfully:", data.message);
+
+      // Optional: Update UI to reflect the post was deleted
+      alert("Post laddered successfully!");
+      location.reload()
+
+  } catch (error) {
+    console.error("Network or server error:", error);
+    alert("Failed to laddered. Please try again later.");
   }
 }
 

@@ -180,3 +180,7 @@ class PostOwnerDetailSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id','user']
 
+class PostLaddered(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'laddered']

@@ -13,7 +13,7 @@ from apps.post.models import PostImage
 from apps.category.models import PostField
 from apps.post.models import PostImage, Post
 from django.shortcuts import get_object_or_404
-from rest_framework.parsers import MultiPartParser, FormParser
+from apps.post.serializers import PostLaddered
 
 class PostFieldsAPIView(APIView):
     """
@@ -236,4 +236,29 @@ class PostOwnerDetails(RetrieveAPIView):
     def get_object(self):
         post_id = self.kwargs.get('id')
         return get_object_or_404(Post, id=post_id)
+
+
+class PostLadder(APIView):
+    serializer_class = PostLaddered
+
+    def post(self, request, *args, **kwargs):
+        post_id = request.data.get('post_id')
+        if not post_id:
+            return Response({"error": "Post ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        post = get_object_or_404(Post, id=post_id)
+
+        if post.user != request.user and not request.user.is_staff:
+            return Response(
+                {"error": "You do not have permission to ladder this post."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        post.laddered = True
+        post.save()
+
+        # Return a success response
+        return Response({"message": "Post laddred successfully."}, status=status.HTTP_200_OK)
+
+
 
