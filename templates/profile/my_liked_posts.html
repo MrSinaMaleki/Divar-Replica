@@ -13,77 +13,16 @@
 {% block content %}
     {% csrf_token %}
     <div class="bg-gray-900 text-white mt-24">
-    <!-- Container -->
-    <div class="max-w-6xl mx-auto mt-8 p-4">
-      <!-- Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Container -->
+      <div class="max-w-6xl mx-auto mt-8 p-4">
+        <!-- Cards Grid -->
+        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Cards will be dynamically inserted here -->
 
-        <!-- Card 1 -->
-        <div
-          class="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex items-start"
-        >
-          <img
-            src="https://via.placeholder.com/120"
-            alt="تصویر 1"
-            class="w-24 h-24 rounded-md object-cover ml-6"
-
-          />
-          <div class="flex-1 ml-4">
-            <h3 class="text-sm font-semibold mb-2">
-              نصب تعمیرات وریگلاژ تخصصی درب و پنجره آلومینیوم PVC
-            </h3>
-            <p class="text-xs text-gray-400 mb-4">
-              دقایقی پیش در تهرانپارس غربی
-            </p>
-            <!-- Buttons -->
-            <div class="flex items-center space-x-12">
-              <button
-                class="flex items-center text-gray-300 hover:text-gray-100 text-sm ml-12"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-5 h-5 ml-1"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                حذف نشان
-              </button>
-              <button
-                class="flex items-center text-gray-300 hover:text-gray-100 text-sm"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-5 h-5 ml-1"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25V9m-3.75 0v10.5A2.25 2.25 0 006.75 21h10.5a2.25 2.25 0 002.25-2.25V9m-15 0l7.5 4.5m7.5-4.5l-7.5 4.5"
-                  />
-                </svg>
-                اشتراک گذاری
-              </button>
-            </div>
-          </div>
         </div>
-
-        <!-- Card 2 -->
 
       </div>
     </div>
-  </div>
 
 {% endblock %}
 
@@ -91,6 +30,76 @@
 {% block extra_body %}
 
  <script>
+    async function getLikedPosts() {
+      try {
+        const res = await fetchWithAuth("http://localhost:8000/bookmarks/api/my_liked_posts", { method: "GET" });
+        const data = await res;
+
+        // Select the container where cards will be rendered
+        const container = document.getElementById("cards-container");
+
+        // Clear the container before rendering
+        container.innerHTML = "";
+
+        // Loop through the fetched data and create cards
+        data.forEach((item) => {
+          const post = item.posts; // Access the post data
+
+          // Use the first image if available; otherwise, fallback to a placeholder
+          const coverImage = post.images.length > 0 ? post.images[0].image : "https://via.placeholder.com/120";
+
+          // Create the card HTML
+          const cardHTML = `
+            <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex items-start hover:bg-black/35 cursor-pointer"
+                onclick="showpostinfo(${post.id})"
+                >
+              <!-- Image -->
+              <img src="${coverImage}" alt="${post.title}" class="w-24 h-24 rounded-md object-cover ml-6" />
+
+              <!-- Content -->
+              <div class="flex-1 ml-4">
+                <h3 class="text-sm font-semibold mb-2">${post.title}</h3>
+                <p class="text-xs text-gray-400 mb-4">${post.description}</p>
+
+                <!-- Buttons -->
+                <div class="flex items-center space-x-12">
+                  <!-- Remove Button -->
+                  <button class="flex items-center text-gray-300 hover:text-gray-100 text-sm ml-12"
+
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    حذف نشان
+                  </button>
+
+                  <!-- Share Button -->
+                  <button class="flex items-center text-gray-300 hover:text-gray-100 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25V9m-3.75 0v10.5A2.25 2.25 0 006.75 21h10.5a2.25 2.25 0 002.25-2.25V9m-15 0l7.5 4.5m7.5-4.5l-7.5 4.5" />
+                    </svg>
+                    اشتراک گذاری
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          // Append the card to the container
+          container.insertAdjacentHTML("beforeend", cardHTML);
+        });
+      } catch (error) {
+        console.error("Error fetching liked posts:", error);
+      }
+    }
+
+    // Call the function to fetch and render posts
+    getLikedPosts();
+
+    function showpostinfo(postId) {
+      location.replace(`http://localhost:8000/post/post_detail/${postId}`)
+      // Function body to be implemented later
+    }
 
   </script>
 

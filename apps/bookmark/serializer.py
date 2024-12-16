@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from apps.account.models import User
 from apps.bookmark.models import Bookmark
+from apps.post.serializers import PostSerializer
 
 
 class FavoriteAddSerializer(serializers.ModelSerializer):
@@ -19,4 +20,11 @@ class FavoriteAddSerializer(serializers.ModelSerializer):
         except Bookmark.DoesNotExist:
             Bookmark.objects.create(user=user, posts_id=validated_data['posts'].id)
         return validated_data
+
+
+class MyFavoriteSerializer(serializers.ModelSerializer):
+    posts = PostSerializer(read_only=True)
+    class Meta:
+        model = Bookmark
+        fields = ['id','user','posts']
 

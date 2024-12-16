@@ -23,7 +23,7 @@ class PostImagesSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return super().create(validated_data)
 
-
+#added post field for user liked posts!
 class PostSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.filter(level=3))
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
@@ -33,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'description', 'laddered','category', 'user', 'location', 'fields', 'images']
+        fields = ['title', 'description', 'laddered','category', 'user', 'location', 'fields', 'images', 'id']
 
 
     def create(self, validated_data):
