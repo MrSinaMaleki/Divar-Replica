@@ -202,5 +202,3 @@ class Profile(RetrieveUpdateAPIView):
     queryset = User.objects.all()
 
 
-class MyPosts(APIView):
-    pass
