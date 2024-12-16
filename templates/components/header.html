@@ -219,6 +219,7 @@
                   </a>
                   <a
                     class="flex items-center gap-x-2 px-4 py-1 hover:bg-zinc-100 hover:text-black transition-all"
+                    href="{% url 'my_posts' %}"
                   >
                     <span class="material-icons text-base"> history_edu </span>
                     <p>آگهی‌های من</p>
@@ -391,7 +392,7 @@
               <li
                 class="bg-dark_redwall text-white leading-10 rounded text-sm px-4 hover:bg-light_redwall transition-all"
               >
-                <button>ثبت آگهی</button>
+                <button><a href="{% url 'add_posts' %}">ثبت آگهی </a></button>
               </li>
             </ul>
           </div>

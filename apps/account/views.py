@@ -200,3 +200,7 @@ from apps.account.serializers import UserSerializer
 class Profile(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class MyPosts(APIView):
+    pass
