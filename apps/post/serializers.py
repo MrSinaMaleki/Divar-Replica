@@ -33,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'description', 'laddered','category', 'user', 'location', 'fields', 'images', 'id']
+        fields = ['title', 'description', 'laddered','category', 'user', 'location', 'fields', 'images', 'id', 'is_delete']
 
 
     def create(self, validated_data):
@@ -147,6 +147,7 @@ class AllPostsSerializer(serializers.ModelSerializer):
             'created_at',
             'images',
             'status',
+            'is_delete'
 
         ]
 

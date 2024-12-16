@@ -153,7 +153,7 @@ class AllPosts(generics.ListAPIView):
     """
     permission_classes = (AllowAny,)
     serializer_class = AllPostsSerializer
-    queryset = Post.objects.filter(status="accepted")
+    queryset = Post.objects.filter(status="accepted", is_delete='False')
 
 
 

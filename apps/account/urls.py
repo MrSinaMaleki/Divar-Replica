@@ -21,5 +21,6 @@ urlpatterns = [
 
     path('api/profile/my_posts', views.UserPosts.as_view(), name='my_api_posts'),
     path('profile/my_posts', TemplateView.as_view(template_name='profile/my_posts.html'), name='my_posts'),
+    path('api/profile/del_my_post', views.DelPost.as_view(), name='del_my_posts'),
 
 ]

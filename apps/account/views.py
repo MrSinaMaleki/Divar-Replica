@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework import generics
 from apps.post.serializers import AllPostsSerializer
 from apps.post.models import Post
+from django.shortcuts import get_object_or_404
 
 class SignRegister(APIView):
     """
@@ -214,4 +215,24 @@ class UserPosts(generics.ListAPIView):
         return posts
 
 
+class DelPost(APIView):
+    def post(self, request, *args, **kwargs):
+        post_id = request.data.get('post_id')
+        if not post_id:
+            return Response({"error": "Post ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        post = get_object_or_404(Post, id=post_id)
+
+
+        if post.user != request.user and not request.user.is_staff:
+            return Response(
+                {"error": "You do not have permission to delete this post."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+
+        post.make_delete()
+
+        # Return a success response
+        return Response({"message": "Post deleted successfully."}, status=status.HTTP_200_OK)
 
