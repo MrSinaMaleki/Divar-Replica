@@ -5,10 +5,11 @@ from apps.category.models import Category
 from apps.core.models import Location
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
+from apps.core.models import LogicalMixin
 
 User = get_user_model()
 
-class Post(models.Model):
+class Post(LogicalMixin):
     class Status(models.TextChoices):
         WAITING_FOR_ADMIN_APPROVAL = 'waiting', 'Waiting for Admin Approval'
         ACCEPTED = 'accepted', 'Accepted',
