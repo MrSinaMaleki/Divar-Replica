@@ -1,0 +1,38 @@
+
+{% extends '_base.html' %}
+{% load static %}
+{% csrf_token %}
+
+{% block title %}
+	بست های من
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+
+{% block content %}
+    {% csrf_token %}
+    <div class="bg-gray-900 text-white mt-24">
+      <!-- Container -->
+      <div class="max-w-6xl mx-auto mt-8 p-4">
+        <!-- Cards Grid -->
+        <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Cards will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block extra_body %}
+    <script>
+    const user_id = {{ user.id }}
+    const user_email = "{{ user }}"
+    </script>
+
+    <script src="{% static 'js/my_posts.js' %}"></script>
+{% endblock %}

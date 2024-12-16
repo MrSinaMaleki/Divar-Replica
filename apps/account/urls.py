@@ -19,4 +19,7 @@ urlpatterns = [
     path('profile/verifycheck/', TemplateView.as_view(template_name='profile/verify.html'), name='verify_check'),
     path('api/profile/verifycheck/', views.VerifyCheck.as_view(), name='profile/verify'),
 
+    path('api/profile/my_posts', views.UserPosts.as_view(), name='my_api_posts'),
+    path('profile/my_posts', TemplateView.as_view(template_name='profile/my_posts.html'), name='my_posts'),
+
 ]

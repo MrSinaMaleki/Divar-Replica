@@ -146,6 +146,7 @@ class AllPostsSerializer(serializers.ModelSerializer):
             'location',
             'created_at',
             'images',
+            'status',
 
         ]
 

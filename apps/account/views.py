@@ -16,7 +16,9 @@ from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from apps.account.models import User
 from rest_framework import status
-from django.utils.timezone import now
+from rest_framework import generics
+from apps.post.serializers import AllPostsSerializer
+from apps.post.models import Post
 
 class SignRegister(APIView):
     """
@@ -200,5 +202,16 @@ from apps.account.serializers import UserSerializer
 class Profile(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class UserPosts(generics.ListAPIView):
+    serializer_class = AllPostsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        posts = Post.objects.filter(user=user)
+        print(posts)
+        return posts
+
 
 
