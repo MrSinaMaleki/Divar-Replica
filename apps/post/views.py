@@ -14,6 +14,7 @@ from apps.category.models import PostField
 from apps.post.models import PostImage, Post
 from django.shortcuts import get_object_or_404
 from apps.post.serializers import PostLaddered
+from django.core.cache import cache
 
 class PostFieldsAPIView(APIView):
     """
@@ -261,4 +262,29 @@ class PostLadder(APIView):
         return Response({"message": "Post laddred successfully."}, status=status.HTTP_200_OK)
 
 
+class PostSearchView(APIView):
+    serializer_class = AllPostsSerializer
+    def get(self, request, *args, **kwargs):
+        cache_key = f"posts_search_{request.qeury_params.urlencode()}"
+        cached_posts = cache.get(cache_key)
+
+        if cached_posts:
+            return Response(cached_posts, status=status.HTTP_200_OK)
+
+        posts = queryset = Post.objects.filter(status="accepted", is_delete='False')
+        title = request.query_params.get('title', None)
+        category = request.query_params.get('category', None)
+        location = request.query_params.get('location', None)
+
+        if title:
+            posts = posts.filter(title__icontains=title)
+        if category:
+            posts = posts.filter(category_id=category)
+        if location:
+            posts = posts.filter(location_id=location)
+
+        serializer = self.serializer_class(posts, many=True)
+
+        cache.set(cache_key, serializer.data, 60 * 5)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
