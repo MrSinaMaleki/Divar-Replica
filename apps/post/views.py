@@ -281,7 +281,25 @@ class PostSearchView(APIView):
         if title:
             posts = posts.filter(title__icontains=title)
         if category:
-            posts = posts.filter(category_id=category)
+            try:
+                selected_category = Category.objects.get(id=category)
+
+                if selected_category.level == 1:
+                    level2_ids = Category.objects.filter(parent=selected_category).values_list('id', flat=True)
+                    level3_ids = Category.objects.filter(parent__in=level2_ids).values_list('id', flat=True)
+                    posts = posts.filter(
+                        Q(category_id=category) | Q(category_id__in=level2_ids) | Q(category_id__in=level3_ids))
+
+                elif selected_category.level == 2:
+                    level3_ids = Category.objects.filter(parent=selected_category).values_list('id', flat=True)
+                    posts = posts.filter(Q(category_id=category) | Q(category_id__in=level3_ids))
+
+                elif selected_category.level == 3:
+                    posts = posts.filter(category_id=category)
+
+            except Category.DoesNotExist:
+                posts = posts.none()
+
         if location:
             try:
                 selected_location = Location.objects.get(id=location)
@@ -293,8 +311,6 @@ class PostSearchView(APIView):
 
             except Location.DoesNotExist:
                 posts = posts.none()
-
-
 
         serializer = self.serializer_class(posts, many=True)
 
