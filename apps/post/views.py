@@ -15,6 +15,8 @@ from apps.post.models import PostImage, Post
 from django.shortcuts import get_object_or_404
 from apps.post.serializers import PostLaddered
 from django.core.cache import cache
+from apps.core.models import Location
+from django.db.models import Q
 
 class PostFieldsAPIView(APIView):
     """
@@ -281,7 +283,18 @@ class PostSearchView(APIView):
         if category:
             posts = posts.filter(category_id=category)
         if location:
-            posts = posts.filter(location_id=location)
+            try:
+                selected_location = Location.objects.get(id=location)
+                if selected_location.type == 1:
+                    child_area_ids = selected_location.sub_areas.filter(type=2).values_list('id', flat=True)
+                    posts = posts.filter(Q(location_id=location) | Q(location_id__in=child_area_ids))
+                else:
+                    posts = posts.filter(location_id=location)
+
+            except Location.DoesNotExist:
+                posts = posts.none()
+
+
 
         serializer = self.serializer_class(posts, many=True)
 
