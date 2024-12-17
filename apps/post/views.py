@@ -265,13 +265,13 @@ class PostLadder(APIView):
 class PostSearchView(APIView):
     serializer_class = AllPostsSerializer
     def get(self, request, *args, **kwargs):
-        cache_key = f"posts_search_{request.qeury_params.urlencode()}"
+        cache_key = f"posts_search_{request.query_params.urlencode()}"
         cached_posts = cache.get(cache_key)
 
         if cached_posts:
             return Response(cached_posts, status=status.HTTP_200_OK)
 
-        posts = queryset = Post.objects.filter(status="accepted", is_delete='False')
+        posts = Post.objects.filter(status="accepted", is_delete='False')
         title = request.query_params.get('title', None)
         category = request.query_params.get('category', None)
         location = request.query_params.get('location', None)

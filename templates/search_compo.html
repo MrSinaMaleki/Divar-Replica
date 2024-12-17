@@ -25,6 +25,7 @@
     </svg>
     <select
       class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
+      id="category-selector"
     >
       <option value="" class="text-gray-400">Select Category</option>
       <option value="technology">Technology</option>
@@ -43,6 +44,7 @@
     />
     <button
       class="p-2 text-purple-400 hover:text-purple-500 focus:outline-none transition"
+      id="search-btn"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -68,9 +70,10 @@
     </svg>
     <select
       class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
+            id="city-selector"
     >
       <option value="" class="text-gray-400">Select City</option>
-      <option value="new-york">New York</option>
+      <option value="2">New York</option>
       <option value="los-angeles">Los Angeles</option>
       <option value="chicago">Chicago</option>
       <option value="san-francisco">San Francisco</option>
@@ -90,6 +93,97 @@
 {% block extra_body %}
 
   <script>
+  fetchLocations()
+  fetchCategories()
+
+
+    async function fetchFilteredPosts() {
+  // Collect values from input fields
+  const titleInput = document.querySelector('input[placeholder="Search for something amazing..."]').value;
+  const categorySelect = document.querySelector('select').value; // First select element (Category)
+  const locationSelect = document.querySelectorAll('select')[1].value; // Second select element (City)
+
+  // Build the query string
+  const queryParams = new URLSearchParams();
+
+  if (titleInput) queryParams.append("title", titleInput);
+  if (categorySelect) queryParams.append("category", categorySelect);
+  if (locationSelect) queryParams.append("location", locationSelect);
+
+  try {
+    // Send the GET request to the API
+    const response = await fetchWithAuth(`http://localhost:8000/post/api/posts/search?${queryParams.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+      
+
+    const data = await response
+
+    // Render posts dynamically
+    renderPosts(data);
+  } catch (error) {
+    console.error("Error fetching posts:", error.message);
+  }
+}
+
+
+    async function fetchLocations() {
+        try {
+          const response = await fetch("http://localhost:8000/location/");
+
+          const data = await response.json();
+
+          const select = document.getElementById("city-selector");
+
+          select.innerHTML =
+            '<option value="" class="text-gray-400">Select City</option>';
+
+
+          data.forEach((location) => {
+              {#console.log(location)#}
+            const option = document.createElement("option");
+            option.value = location.id;
+            option.textContent = location.title;
+            select.appendChild(option);
+          });
+
+        } catch (error) {
+          console.error("Error fetching locations:", error);
+        }
+      }
+
+    async function fetchCategories() {
+        try {
+          const response = await fetch("http://localhost:8000/category/all_categories/");
+          const data = await response.json();
+
+          const select = document.getElementById("category-selector");
+          select.innerHTML =
+            '<option value="" class="text-gray-400">Select Category</option>';
+
+          data.forEach((category) => {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.textContent = category.title;
+            select.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      }
+
+
+function renderPosts(posts) {
+    console.log("results: ", posts)
+}
+
+
+document.getElementById('search-btn').addEventListener("click", fetchFilteredPosts);
+
+
 
   </script>
 
