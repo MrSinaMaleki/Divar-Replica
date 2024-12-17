@@ -41,6 +41,7 @@ urlpatterns = [
     path('location/', LocationList.as_view(), name='location'),
     path('post/', include('apps.post.urls'), name='post'),
     path('bookmarks/', include('apps.bookmark.urls'), name='bookmark'),
+    path('search/', TemplateView.as_view(template_name='search_compo.html'), name='search'),
 ]
 
 if settings.DEBUG:
