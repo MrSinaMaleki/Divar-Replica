@@ -57,12 +57,7 @@ class SignRegister(APIView):
             context={"code": code}
         )
 
-        # _ = MailProvider(
-        #     "Login/Register CODE",
-        #     email,
-        #     "mail/code.html",
-        #     {"code": code}
-        # ).send()
+        print(code)
 
         cache.set(email, code, 180)
         return Response({"status": "success"})
