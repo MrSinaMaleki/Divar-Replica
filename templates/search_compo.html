@@ -12,76 +12,74 @@
 
 {% block content %}
     {% csrf_token %}
-    <div class="flex flex-col md:flex-row items-center justify-between bg-gray-800 p-4 rounded-lg shadow-lg space-y-4 md:space-y-0 mt-96">
-  <!-- Category Selector -->
-  <div class="w-full md:w-1/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-indigo-500 h-12">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="w-6 h-6 text-indigo-400 ml-3"
-      fill="currentColor"
-      viewBox="0 0 64 64"
-    >
-      <path d="M9.89,30.496c-1.14,1.122 -1.784,2.653 -1.791,4.252c-0.006,1.599 0.627,3.135 1.758,4.266c3.028,3.028 7.071,7.071 10.081,10.082c2.327,2.326 6.093,2.349 8.448,0.051c5.91,-5.768 16.235,-15.846 19.334,-18.871c0.578,-0.564 0.905,-1.338 0.905,-2.146c0,-4.228 0,-17.607 0,-17.607l-17.22,0c-0.788,0 -1.544,0.309 -2.105,0.862c-3.065,3.018 -13.447,13.239 -19.41,19.111Z" />
-    </svg>
-    <select
-      class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
-      id="category-selector"
-    >
-      <option value="" class="text-gray-400">Select Category</option>
-      <option value="technology">Technology</option>
-      <option value="fashion">Fashion</option>
-      <option value="sports">Sports</option>
-      <option value="education">Education</option>
-    </select>
-  </div>
+    <div class="flex flex-col md:flex-row items-center justify-between bg-gray-800 p-4 rounded-lg shadow-lg space-y-4 md:space-y-0 mt-24 shadow">
+      <!-- Category Selector -->
+      <div class="w-full md:w-1/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-indigo-500 h-12">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6 text-indigo-400 ml-3"
+          fill="currentColor"
+          viewBox="0 0 64 64"
+        >
+          <path d="M9.89,30.496c-1.14,1.122 -1.784,2.653 -1.791,4.252c-0.006,1.599 0.627,3.135 1.758,4.266c3.028,3.028 7.071,7.071 10.081,10.082c2.327,2.326 6.093,2.349 8.448,0.051c5.91,-5.768 16.235,-15.846 19.334,-18.871c0.578,-0.564 0.905,-1.338 0.905,-2.146c0,-4.228 0,-17.607 0,-17.607l-17.22,0c-0.788,0 -1.544,0.309 -2.105,0.862c-3.065,3.018 -13.447,13.239 -19.41,19.111Z" />
+        </svg>
+        <select
+          class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
+          id="category-selector"
+        >
+          <option value="" class="text-gray-400">Select Category</option>
+        </select>
+      </div>
 
-  <!-- Search by Title -->
-  <div class="w-full md:w-2/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-purple-500 h-12">
-    <input
-      type="text"
-      placeholder="Search for something amazing..."
-      class="w-full bg-gray-900 text-gray-300 placeholder-gray-500 py-2 px-4 focus:outline-none rounded-lg text-lg"
-    />
-    <button
-      class="p-2 text-purple-400 hover:text-purple-500 focus:outline-none transition"
-      id="search-btn"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-6 h-6"
-        fill="currentColor"
-        viewBox="0 -0.24 28.423 28.423"
-      >
-        <path d="M14.953,2.547A12.643,12.643,0,1,0,27.6,15.19,12.649,12.649,0,0,0,14.953,2.547Zm0,2A10.643,10.643,0,1,1,4.31,15.19,10.648,10.648,0,0,1,14.953,4.547Z" />
-        <path d="M30.441,28.789l-6.276-6.276a1,1,0,1,0-1.414,1.414L29.027,30.2a1,1,0,1,0,1.414-1.414Z" />
-      </svg>
-    </button>
-  </div>
+      <!-- Search by Title -->
+      <div class="w-full md:w-2/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-purple-500 h-12">
+        <input
+          type="text"
+          placeholder="Search for something amazing..."
+          class="w-full bg-gray-900 text-gray-300 placeholder-gray-500 py-2 px-4 focus:outline-none rounded-lg text-lg"
+        />
+        <button
+          class="p-2 text-purple-400 hover:text-purple-500 focus:outline-none transition"
+          id="search-btn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6"
+            fill="currentColor"
+            viewBox="0 -0.24 28.423 28.423"
+          >
+            <path d="M14.953,2.547A12.643,12.643,0,1,0,27.6,15.19,12.649,12.649,0,0,0,14.953,2.547Zm0,2A10.643,10.643,0,1,1,4.31,15.19,10.648,10.648,0,0,1,14.953,4.547Z" />
+            <path d="M30.441,28.789l-6.276-6.276a1,1,0,1,0-1.414,1.414L29.027,30.2a1,1,0,1,0,1.414-1.414Z" />
+          </svg>
+        </button>
+      </div>
 
-  <!-- City Selector -->
-  <div class="w-full md:w-1/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-green-500 h-12">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="w-6 h-6 text-green-400 ml-3"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path d="M12 2C8.134 2 5 5.134 5 9c0 6.134 7 13 7 13s7-6.866 7-13c0-3.866-3.134-7-7-7zm0 9.5c-1.379 0-2.5-1.121-2.5-2.5S10.621 6.5 12 6.5s2.5 1.121 2.5 2.5-1.121 2.5-2.5 2.5z" />
-    </svg>
-    <select
-      class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
-            id="city-selector"
-    >
-      <option value="" class="text-gray-400">Select City</option>
-      <option value="2">New York</option>
-      <option value="los-angeles">Los Angeles</option>
-      <option value="chicago">Chicago</option>
-      <option value="san-francisco">San Francisco</option>
-    </select>
-  </div>
-</div>
+      <!-- City Selector -->
+      <div class="w-full md:w-1/4 flex items-center border border-gray-600 rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-green-500 h-12">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6 text-green-400 ml-3"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2C8.134 2 5 5.134 5 9c0 6.134 7 13 7 13s7-6.866 7-13c0-3.866-3.134-7-7-7zm0 9.5c-1.379 0-2.5-1.121-2.5-2.5S10.621 6.5 12 6.5s2.5 1.121 2.5 2.5-1.121 2.5-2.5 2.5z" />
+        </svg>
+        <select
+          class="w-full bg-gray-900 text-gray-300 py-2 px-3 focus:outline-none rounded-lg appearance-none"
+                id="city-selector"
+        >
+          <option value="" class="text-gray-400">Select City</option>
 
+        </select>
+      </div>
+    </div>
 
+    <div id="app" class="max-w-7xl mx-auto z-0 mt-24 ">
+        <div class="txt">نتایج جستجو: </div>
+        <div id="posts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Posts will be rendered here -->
+        </div>
+    </div>
 
 
 
@@ -93,10 +91,9 @@
 {% block extra_body %}
 
   <script>
-  fetchLocations()
-  fetchCategories()
 
-
+    fetchLocations()
+    fetchCategories()
     async function fetchFilteredPosts() {
   // Collect values from input fields
   const titleInput = document.querySelector('input[placeholder="Search for something amazing..."]').value;
@@ -128,7 +125,6 @@
     console.error("Error fetching posts:", error.message);
   }
 }
-
 
     async function fetchLocations() {
         try {
@@ -175,17 +171,39 @@
         }
       }
 
+    function renderPosts(data) {
+        const postsContainer = document.getElementById('posts');
+        postsContainer.innerHTML = ''
+        data.forEach(post => {
+            const coverImage = post.images.find(img => img.is_cover)?.image || 'https://via.placeholder.com/150';
+            const ladderedClass = post.laddered
+              ? 'bg-red-200 border-red-500 relative'
+              : 'bg-white border';
+            const ladderedBadge = post.laddered
+              ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">پله شده</span>`
+              : '';
 
-function renderPosts(posts) {
-    console.log("results: ", posts)
-}
+            // Convert to Persian date
+            const persianDate = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(post.created_at));
 
+            // Add favorite button
+            const postHTML = `
+              <div onclick="showpostinfo(${post.id})" class="cursor-pointer shadow-lg rounded-lg overflow-hidden border ${ladderedClass}">
+                ${ladderedBadge}
+                <img src="${coverImage}" alt="${post.title}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                  <h2 class="text-lg font-bold">${post.title}</h2>
+                  <p class="text-gray-600 text-sm">${post.description}</p>
+                  <p class="text-gray-400 text-xs mt-2">تاریخ: ${persianDate}</p>
+                </div>
+              </div>
+            `;
+            postsContainer.innerHTML += postHTML;
+        });
+    }
 
-document.getElementById('search-btn').addEventListener("click", fetchFilteredPosts);
-
-
+    document.getElementById('search-btn').addEventListener("click", fetchFilteredPosts);
 
   </script>
-
 
 {% endblock %}

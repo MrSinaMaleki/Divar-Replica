@@ -266,6 +266,7 @@ class PostLadder(APIView):
 
 class PostSearchView(APIView):
     serializer_class = AllPostsSerializer
+    permission_classes = (AllowAny, )
     def get(self, request, *args, **kwargs):
         cache_key = f"posts_search_{request.query_params.urlencode()}"
         cached_posts = cache.get(cache_key)
