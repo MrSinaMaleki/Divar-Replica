@@ -1,3 +1,5 @@
+from mimetypes import read_mime_types
+
 from apps.account.serializers import UserLoginSerializer, UserVerifySerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -211,7 +213,6 @@ class UserPosts(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         posts = Post.objects.filter(user=user)
-        print(posts)
         return posts
 
 
@@ -236,3 +237,14 @@ class DelPost(APIView):
         # Return a success response
         return Response({"message": "Post deleted successfully."}, status=status.HTTP_200_OK)
 
+
+class OtherUserPosts(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = AllPostsSerializer
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id')
+        if user_id is not None:
+            posts = Post.objects.filter(user_id=user_id)
+            return posts
+        return Post.objects.none()

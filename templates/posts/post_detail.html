@@ -82,11 +82,24 @@
 
   <!-- Contact Info Section -->
   <div id="contact-info" class="hidden w-11/12 max-w-5xl bg-gray-800 rounded-lg shadow-lg mt-6 p-6 text-right">
-    <h2 class="text-xl font-bold text-gray-200 mb-4">اطلاعات تماس</h2>
+      <h2 class="text-xl font-bold text-gray-200 mb-4 border-b border-gray-600 pb-2">اطلاعات تماس</h2>
     <p id="contact-name" class="text-gray-300 mb-2">نام: در حال بارگذاری...</p>
     <p id="contact-email" class="text-gray-300">ایمیل: در حال بارگذاری...</p>
+      <a class="text-lg text-sky-400 cursor-pointer" onclick="fetchPosts()">مشاهده آگهی های فعال</a>
+
+          <div id="app" class="max-w-7xl mx-auto z-0 mt-24 hidden">
+        <div id="posts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Posts will be rendered here -->
+        </div>
+    </div>
+
   </div>
+
+
+
+
 </div>
+
 
 {% endblock %}
 
@@ -187,15 +200,13 @@
     }
   }
 
-
   async function fetchPostOwner() {
     try {
       const response = await fetchWithAuth(postOwnerUrl, { method: "GET" });
-      if (!response.ok) {
 
-      }
 
       const data = response;
+      const user_id = data.user.id
 
       document.getElementById("contact-name").textContent = `نام: ${
         data.user.first_name || "نامشخص"
@@ -217,8 +228,8 @@
   fetchPostDetails();
 
    const heartButton = document.getElementById("heartButton");
-  const heartIcon = document.getElementById("heartIcon");
-    let isLiked = false
+   const heartIcon = document.getElementById("heartIcon");
+   let isLiked = false
 
   heartButton.addEventListener("click", () => {
 
@@ -287,6 +298,59 @@
       }
         CheckFavorite()
 
+async function fetchPosts() {
+
+    try {
+        console.log("fetching related posts: ")
+        const r = await fetchWithAuth(postOwnerUrl, { method: "GET" });
+
+
+        const d = r;
+        const user_id = d.user.id
+
+        const response = await fetch(`http://localhost:8000/post/api/posts/otheruser?user_id=${user_id}`);
+        const data = await response.json();
+
+        const postsContainer = document.getElementById('posts');
+        postsContainer.innerHTML = ''; // Clear existing posts
+
+        const appDiv = document.getElementById('app')
+        appDiv.classList.remove('hidden')
+
+
+        data.forEach(post => {
+
+          const coverImage = post.images.find(img => img.is_cover)?.image || 'https://via.placeholder.com/150';
+          const ladderedClass = post.laddered
+            ? 'bg-red-200 border-red-500 relative'
+            : 'bg-white border';
+          const ladderedBadge = post.laddered
+            ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">پله شده</span>`
+            : '';
+
+          // Convert to Persian date
+          const persianDate = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(post.created_at));
+
+          // Add favorite button
+          const postHTML = `
+            <div onclick="showpostinfo(${post.id})" class="cursor-pointer shadow-lg rounded-lg overflow-hidden border ${ladderedClass}">
+              ${ladderedBadge}
+              <img src="${coverImage}" alt="${post.title}" class="w-full h-48 object-cover">
+              <div class="p-4">
+                <h2 class="text-lg font-bold">${post.title}</h2>
+                <p class="text-gray-600 text-sm">${post.description}</p>
+                <p class="text-gray-400 text-xs mt-2">تاریخ: ${persianDate}</p>
+              </div>
+            </div>
+          `;
+
+          postsContainer.innerHTML += postHTML;
+        });
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        document.getElementById('posts').innerHTML = `<p class="text-red-500">مشکلی در بارگذاری پست‌ها وجود دارد</p>`;
+  }
+}
 </script>
 
 {% endblock %}
