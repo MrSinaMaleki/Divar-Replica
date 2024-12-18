@@ -4,7 +4,6 @@ from apps.account.serializers import UserLoginSerializer, UserVerifySerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from random import randint
-# from services.mail import MailProvider
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -22,6 +21,7 @@ from rest_framework import generics
 from apps.post.serializers import AllPostsSerializer
 from apps.post.models import Post
 from django.shortcuts import get_object_or_404
+from apps.account.tasks import send_email
 
 class SignRegister(APIView):
     """
@@ -49,6 +49,14 @@ class SignRegister(APIView):
         if not (code := cache.get(email)):
             code = self.code_generator()
 
+
+        send_email.delay(
+            subject="Login/Register CODE",
+            recipient=email,
+            template="mail/code.html",
+            context={"code": code}
+        )
+
         # _ = MailProvider(
         #     "Login/Register CODE",
         #     email,
@@ -56,7 +64,6 @@ class SignRegister(APIView):
         #     {"code": code}
         # ).send()
 
-        print(code)
         cache.set(email, code, 180)
         return Response({"status": "success"})
 
