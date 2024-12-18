@@ -4,7 +4,10 @@ from rest_framework.generics import ListAPIView
 from apps.core.serializers import LocationSerializer
 from apps.core.models import Location
 from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class LocationList(ListAPIView):
     """
          - example response

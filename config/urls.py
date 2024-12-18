@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from django.views.generic import TemplateView
 from apps.core.views import LocationList
+import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,3 +48,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +
                     static(settings.STATIC_URL, document_root=settings.STATIC_ROOT_custom))
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]

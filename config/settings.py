@@ -233,3 +233,10 @@ CELERY_TASK_SERIALIZER = config('CELERY_TASK_SERIALIZER', default='json')
 CELERY_RESULT_SERIALIZER = config('CELERY_RESULT_SERIALIZER', default='json')
 CELERY_TIMEZONE = config('CELERY_TIMEZONE', default='UTC')
 
+
+# Django debug toolbar:
+INSTALLED_APPS += ["debug_toolbar"]
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+INTERNAL_IPS = ["127.0.0.1"]
+

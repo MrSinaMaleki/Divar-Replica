@@ -17,6 +17,8 @@ from apps.post.serializers import PostLaddered
 from django.core.cache import cache
 from apps.core.models import Location
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 class PostFieldsAPIView(APIView):
     """
@@ -138,6 +140,7 @@ class AddImagesAPIView(APIView):
             return Response({"message": "Images were added successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class AllPosts(generics.ListAPIView):
     """
                      - example response
@@ -160,6 +163,8 @@ class AllPosts(generics.ListAPIView):
 
 
 
+
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class PostDetails(RetrieveAPIView):
     """
         - example response
@@ -213,6 +218,17 @@ class PostDetails(RetrieveAPIView):
     def get_object(self):
         post_id = self.kwargs.get('id')
         return get_object_or_404(Post, id=post_id)
+
+    def list(self, request, *args, **kwargs):
+        print("lists has been called. ")
+        cache_key = "all_posts"
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            print("Cache hit!")  # Log cache hit
+        else:
+            print("Cache miss!")  # Log cache miss
+
+        return super().list(request, *args, **kwargs)
 
 
 class PostOwnerDetails(RetrieveAPIView):
