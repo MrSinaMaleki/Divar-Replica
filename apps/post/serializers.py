@@ -13,6 +13,10 @@ class FieldSerializer(serializers.ModelSerializer):
         model = Field
         fields = ['id', 'name', 'is_optional']
 
+    # to represent (fix)
+    def to_representation(self, instance):
+        return {'id':instance.id, 'name':getattr(instance, "name", "none"), 'is_optional':getattr(instance, "is_optional", "none")}
+
 
 class PostImagesSerializer(serializers.ModelSerializer):
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())

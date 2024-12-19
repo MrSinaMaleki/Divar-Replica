@@ -8,6 +8,7 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
+# bulk create (bug fix)
 class Command(BaseCommand):
     help = 'Populate provinces and areas from the Iran locations API'
 
