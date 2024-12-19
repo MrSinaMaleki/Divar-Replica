@@ -32,5 +32,4 @@ def bulk_create_posts(batch_size=5000, total_posts=100000):
 
     print("Bulk creation of posts completed!")
 
-# Trigger the bulk creation
 bulk_create_posts(batch_size=5000, total_posts=100)

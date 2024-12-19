@@ -221,9 +221,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST', cast=str)
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_HOST_USER = 'replicadivarnoreply@gmail.com'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='<PASSWORD>', cast=str)
-
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='<EMAIL>', cast=str)
 
 # Celery:
 BROKER_URL = config('BROKER_URL', default='redis://localhost:6379/0')
@@ -235,8 +235,8 @@ CELERY_TIMEZONE = config('CELERY_TIMEZONE', default='UTC')
 
 
 # Django debug toolbar:
-INSTALLED_APPS += ["debug_toolbar"]
-MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
-
-INTERNAL_IPS = ["127.0.0.1"]
+# INSTALLED_APPS += ["debug_toolbar"]
+# MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+#
+# INTERNAL_IPS = ["127.0.0.1"]
 

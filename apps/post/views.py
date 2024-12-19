@@ -140,7 +140,6 @@ class AddImagesAPIView(APIView):
             return Response({"message": "Images were added successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class AllPosts(generics.ListAPIView):
     """
                      - example response
@@ -159,12 +158,9 @@ class AllPosts(generics.ListAPIView):
     """
     permission_classes = (AllowAny,)
     serializer_class = AllPostsSerializer
-    queryset = Post.objects.filter(status="accepted", is_delete='False')
+    queryset = Post.objects.filter(status="accepted", is_delete=False)
 
 
-
-
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class PostDetails(RetrieveAPIView):
     """
         - example response
@@ -219,16 +215,16 @@ class PostDetails(RetrieveAPIView):
         post_id = self.kwargs.get('id')
         return get_object_or_404(Post, id=post_id)
 
-    def list(self, request, *args, **kwargs):
-        print("lists has been called. ")
-        cache_key = "all_posts"
-        cached_data = cache.get(cache_key)
-        if cached_data:
-            print("Cache hit!")  # Log cache hit
-        else:
-            print("Cache miss!")  # Log cache miss
-
-        return super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     print("lists has been called. ")
+    #     cache_key = "all_posts"
+    #     cached_data = cache.get(cache_key)
+    #     if cached_data:
+    #         print("Cache hit!")  # Log cache hit
+    #     else:
+    #         print("Cache miss!")  # Log cache miss
+    #
+    #     return super().list(request, *args, **kwargs)
 
 
 class PostOwnerDetails(RetrieveAPIView):
@@ -247,7 +243,6 @@ class PostOwnerDetails(RetrieveAPIView):
                 }
 
     """
-    # permission_classes = (AllowAny,)
     queryset = Post.objects.all()
     serializer_class = PostOwnerDetailSerializer
 

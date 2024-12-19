@@ -50,12 +50,12 @@ class SignRegister(APIView):
             code = self.code_generator()
 
 
-        send_email.delay(
-            subject="Login/Register CODE",
-            recipient=email,
-            template="mail/code.html",
-            context={"code": code}
-        )
+        # send_email.delay(
+        #     subject="Login/Register CODE",
+        #     recipient=email,
+        #     template="mail/code.html",
+        #     context={"code": code}
+        # )
 
         print(code)
 
@@ -247,6 +247,6 @@ class OtherUserPosts(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id')
         if user_id is not None:
-            posts = Post.objects.filter(user_id=user_id)
+            posts = Post.objects.filter(user_id=user_id, status="accepted", is_delete=False)
             return posts
         return Post.objects.none()
